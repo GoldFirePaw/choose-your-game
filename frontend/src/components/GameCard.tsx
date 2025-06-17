@@ -1,6 +1,6 @@
 import { useGamesContext } from "../contexts/gamesContext";
-import type { Game } from "../types";
 import { GamePlayersCheckboxes } from "./GamePlayersCheckboxes";
+import type { Game } from "../types";
 import s from "./GameCard.module.css";
 
 type Props = {
@@ -38,7 +38,7 @@ export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
 
       {isActive && (
         <GamePlayersCheckboxes
-          game={game}
+          gameId={game._id}
           setDisplayPlayers={() => setActiveGameId(null)}
         />
       )}

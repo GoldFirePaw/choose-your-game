@@ -5,26 +5,28 @@ import {
 } from "../api/games/updatePlayers";
 import { useGamesContext } from "../contexts/gamesContext";
 import { usePlayerContext } from "../contexts/playersContext";
-import type { Game } from "../types";
 import type { Player } from "../types";
 import s from "./gamePlayersCheckboxes.module.css";
 
 type Props = {
-  game: Game;
-  onUpdate?: () => void;
+  gameId: string;
   setDisplayPlayers: (show: boolean) => void;
 };
 
-export const GamePlayersCheckboxes = ({ game, setDisplayPlayers }: Props) => {
+export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
   const { players } = usePlayerContext();
-  const { refetchGames } = useGamesContext();
+  const { games, refetchGames } = useGamesContext();
   const [isUpdating, setIsUpdating] = useState(false);
+
+  const game = games.find((g) => g._id === gameId);
+
+  if (!game) return null;
 
   const isPlayerInGame = (player: Player) =>
     game.players?.some((p) => p._id === player._id);
 
   const handleToggle = async (player: Player) => {
-    if (isUpdating) return; // empêcher les doubles clics
+    if (isUpdating) return;
     setIsUpdating(true);
 
     const alreadyIn = isPlayerInGame(player);
@@ -34,7 +36,7 @@ export const GamePlayersCheckboxes = ({ game, setDisplayPlayers }: Props) => {
       : await addPlayerToGame(game._id, player._id);
 
     if (success) {
-      await refetchGames();
+      await refetchGames(); // met à jour le contexte
     }
 
     setIsUpdating(false);
