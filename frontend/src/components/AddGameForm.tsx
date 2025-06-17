@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { useGamesContext } from '../contexts/gamesContext';
+import { useState } from "react";
+import { useGamesContext } from "../contexts/gamesContext";
 
 export const AddGameForm = () => {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const [min, setMin] = useState(1);
   const [max, setMax] = useState(1);
   const { addGame } = useGamesContext();
@@ -13,9 +13,10 @@ export const AddGameForm = () => {
       name,
       minimumPlayers: min,
       maximumPlayers: max,
+      players: [],
     });
 
-    setName('');
+    setName("");
     setMin(1);
     setMax(1);
   };
@@ -23,9 +24,24 @@ export const AddGameForm = () => {
   return (
     <form onSubmit={handleSubmit}>
       <h2>Ajouter un jeu</h2>
-      <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Nom" required />
-      <input type="number" value={min} onChange={(e) => setMin(Number(e.target.value))} required />
-      <input type="number" value={max} onChange={(e) => setMax(Number(e.target.value))} required />
+      <input
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="Nom"
+        required
+      />
+      <input
+        type="number"
+        value={min}
+        onChange={(e) => setMin(Number(e.target.value))}
+        required
+      />
+      <input
+        type="number"
+        value={max}
+        onChange={(e) => setMax(Number(e.target.value))}
+        required
+      />
       <button type="submit">Ajouter</button>
     </form>
   );
