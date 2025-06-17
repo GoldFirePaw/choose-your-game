@@ -5,7 +5,7 @@ const cors = require('cors')
 const bodyParser = require('body-parser')
 
 const app = express()
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 const dataFile = path.join(__dirname, 'data/games.json')
 const playersFile = path.join(__dirname, 'data/players.json');
 

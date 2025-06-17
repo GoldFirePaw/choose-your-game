@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
-import type { Player } from '../../types';
-import { getPlayers } from './getPlayers';
+import { useEffect, useState } from "react";
+import type { Player } from "../../types";
+import { getPlayers } from "./getPlayers";
 
 export const usePlayers = () => {
   const [players, setPlayers] = useState<Player[]>([]);
