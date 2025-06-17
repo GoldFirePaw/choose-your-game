@@ -21,7 +21,7 @@ export const GamePlayersCheckboxes = ({ game, setDisplayPlayers }: Props) => {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const isPlayerInGame = (player: Player) =>
-    game.players?.some((p) => p.id === player.id);
+    game.players?.some((p) => p._id === player._id);
 
   const handleToggle = async (player: Player) => {
     if (isUpdating) return; // empêcher les doubles clics
@@ -30,8 +30,8 @@ export const GamePlayersCheckboxes = ({ game, setDisplayPlayers }: Props) => {
     const alreadyIn = isPlayerInGame(player);
 
     const success = alreadyIn
-      ? await removePlayerFromGame(game.id, player.id)
-      : await addPlayerToGame(game.id, player.id);
+      ? await removePlayerFromGame(game._id, player._id)
+      : await addPlayerToGame(game._id, player._id);
 
     if (success) {
       await refetchGames();
@@ -46,7 +46,7 @@ export const GamePlayersCheckboxes = ({ game, setDisplayPlayers }: Props) => {
         <h4>Joueurs possédant le jeu :</h4>
         <div>
           {players.map((player) => (
-            <div key={player.id}>
+            <div key={player._id}>
               <label>
                 <input
                   type="checkbox"

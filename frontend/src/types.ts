@@ -1,5 +1,5 @@
 export type Game = {
-  id: string;
+  _id: string;
   name: string;
   minimumPlayers: number;
   maximumPlayers: number;
@@ -7,6 +7,13 @@ export type Game = {
 };
 
 export type Player = {
-  id: string;
+  _id: string;
   name: string;
+};
+
+export type NewGame = {
+  name: string;
+  minimumPlayers: number;
+  maximumPlayers: number;
+  players: Player[];
 };

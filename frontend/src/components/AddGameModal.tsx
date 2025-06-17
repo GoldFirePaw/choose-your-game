@@ -24,7 +24,7 @@ export const AddGameModal = ({ onClose }: { onClose: () => void }) => {
       name,
       minimumPlayers: minPlayers,
       maximumPlayers: maxPlayers,
-      players: players.filter((p) => selectedPlayers.includes(p.id)),
+      players: players.filter((p) => selectedPlayers.includes(p._id)),
     });
     onClose();
   };
@@ -64,12 +64,12 @@ export const AddGameModal = ({ onClose }: { onClose: () => void }) => {
             Joueurs possédant le jeu :
             <div className={s.playersList}>
               {players.map((player) => (
-                <label key={player.id} className={s.checkboxItem}>
+                <label key={player._id} className={s.checkboxItem}>
                   <input
                     type="checkbox"
-                    value={player.id}
-                    checked={selectedPlayers.includes(player.id)}
-                    onChange={() => handleTogglePlayer(player.id)}
+                    value={player._id}
+                    checked={selectedPlayers.includes(player._id)}
+                    onChange={() => handleTogglePlayer(player._id)}
                   />
                   {player.name}
                 </label>

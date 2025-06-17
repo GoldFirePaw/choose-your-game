@@ -3,12 +3,12 @@ import type { ReactNode } from "react";
 import { getGames } from "../api/games/getGames";
 import { addGame as apiAddGame } from "../api/games/addGame";
 import { deleteGame as apiDeleteGame } from "../api/games/deleteGame";
-import type { Game } from "../types";
+import type { Game, NewGame } from "../types";
 
 type GamesContextType = {
   games: Game[];
   loading: boolean;
-  addGame: (game: Omit<Game, "id">) => Promise<void>;
+  addGame: (game: NewGame) => Promise<void>;
   deleteGame: (id: string) => Promise<void>;
   refetchGames: () => Promise<void>;
 };
@@ -30,7 +30,7 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
     fetchGames();
   }, []);
 
-  const addGame = async (game: Omit<Game, "id">) => {
+  const addGame = async (game: NewGame) => {
     const newGame = await apiAddGame(game);
     if (newGame) {
       setGames((prev) => [...prev, newGame]);
@@ -40,7 +40,7 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
   const deleteGame = async (id: string) => {
     const success = await apiDeleteGame(id);
     if (success) {
-      setGames((prev) => prev.filter((g) => g.id !== id));
+      setGames((prev) => prev.filter((g) => g._id !== id));
     }
   };
 

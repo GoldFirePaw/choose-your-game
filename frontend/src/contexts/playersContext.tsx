@@ -35,7 +35,7 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
   const deletePlayer = async (id: string) => {
     const success = await apiDeletePlayer(id);
     if (success) {
-      setPlayers((prev) => prev.filter((player) => player.id !== id));
+      setPlayers((prev) => prev.filter((player) => player._id !== id));
     }
   };
 

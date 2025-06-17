@@ -8,9 +8,9 @@ export const PlayersList = () => {
   return (
     <ul>
       {players.map((p) => (
-        <li key={p.id}>
+        <li key={p._id}>
           {p.name}
-          <button onClick={() => deletePlayer(p.id)}>❌</button>
+          <button onClick={() => deletePlayer(p._id)}>❌</button>
         </li>
       ))}
     </ul>
