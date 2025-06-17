@@ -1,0 +1,17 @@
+# Node modules (frontend & backend)
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+
+# Build files
+dist/
+.vite/
+
+# System files
+.DS_Store
+
+# Logs
+*.log
+
+# Env files
+*.env
