@@ -19,13 +19,22 @@ export const AddGameModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    console.log("📝 Soumission du formulaire :", {
+      name,
+      minPlayers,
+      maxPlayers,
+      selectedPlayers,
+    });
     e.preventDefault();
-    await addGame({
+    const newGamePayload = {
       name,
       minimumPlayers: minPlayers,
       maximumPlayers: maxPlayers,
       players: players.filter((p) => selectedPlayers.includes(p._id)),
-    });
+    };
+
+    console.log("📦 Données envoyées à addGame :", newGamePayload);
+    await addGame(newGamePayload);
     onClose();
   };
 

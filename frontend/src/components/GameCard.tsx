@@ -11,6 +11,7 @@ type Props = {
 
 export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
   const { deleteGame } = useGamesContext();
+  console.log("🧾 Affichage carte jeu :", game);
 
   return (
     <div className={s.gameCardContainer}>
@@ -25,7 +26,10 @@ export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
           {isActive ? "Hide" : "Show"} players
         </button>
         <button
-          onClick={() => deleteGame(game._id)}
+          onClick={() => {
+            console.log("🗑️ Suppression demandée :", game._id);
+            game._id && deleteGame(game._id);
+          }}
           style={{ backgroundColor: "red", color: "white" }}
         >
           Supprimer
