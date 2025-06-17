@@ -3,6 +3,8 @@ import type { Game } from "../../types";
 export const addGame = async (game: Omit<Game, "id">): Promise<Game | null> => {
   const API = import.meta.env.VITE_API_BASE_URL;
 
+  console.log("🔍 API utilisée :", API);
+
   try {
     const response = await fetch(`${API}/games`, {
       method: "POST",

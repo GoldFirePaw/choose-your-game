@@ -22,10 +22,6 @@
         "name": "Zanzib"
       },
       {
-        "id": 11,
-        "name": "Valentrain"
-      },
-      {
         "id": 2,
         "name": "Fabien"
       },
@@ -48,6 +44,10 @@
       {
         "id": 5,
         "name": "Clémence"
+      },
+      {
+        "id": 11,
+        "name": "Valentrain"
       }
     ]
   },
@@ -190,5 +190,17 @@
         "name": "Alex"
       }
     ]
+  },
+  {
+    "name": "test",
+    "minimumPlayers": 1,
+    "maximumPlayers": 4,
+    "players": [
+      {
+        "id": 1,
+        "name": "Clément"
+      }
+    ],
+    "id": 1750163779631
   }
 ]
