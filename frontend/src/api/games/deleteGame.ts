@@ -1,16 +1,18 @@
 export const deleteGame = async (id: number): Promise<boolean> => {
+  const API = import.meta.env.VITE_API_BASE_URL;
+
   try {
-    const response = await fetch(`http://localhost:3001/games/${id}`, {
-      method: 'DELETE',
+    const response = await fetch(`${API}/games/${id}`, {
+      method: "DELETE",
     });
 
     if (!response.ok) {
-      throw new Error('Failed to delete game');
+      throw new Error("Failed to delete game");
     }
 
     return true;
   } catch (error) {
-    console.error('Error deleting game:', error);
+    console.error("Error deleting game:", error);
     return false;
   }
 };
