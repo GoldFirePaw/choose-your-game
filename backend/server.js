@@ -130,8 +130,8 @@ app.delete("/players/:id", async (req, res) => {
     if (result.deletedCount === 0) return res.status(404).json({ error: "Player not found" });
 
     await db.collection("games").updateMany(
-      {},
-      { $pull: { players: { _id: playerId } } }
+    {},
+    { $pull: { players: { _id: playerId.toString() } } }
     );
 
     res.json({ success: true });
@@ -174,7 +174,7 @@ app.delete("/games/:gameId/players/:playerId", async (req, res) => {
     const db = client.db(dbName);
     const updated = await db.collection("games").findOneAndUpdate(
       { _id: gameId },
-      { $pull: { players: { _id: playerId } } },
+      { $pull: { players: { _id: playerId.toString } } },
       { returnDocument: "after" }
     );
     if (!updated.value) return res.status(404).json({ error: "Game not found" });
