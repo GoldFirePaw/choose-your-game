@@ -19,6 +19,7 @@ export const addGame = async (game: NewGame): Promise<Game | null> => {
     }
 
     const newGame = await response.json();
+    console.log("📬 Réponse reçue de l'API :", newGame);
     return newGame;
   } catch (error) {
     console.error("Error adding game:", error);

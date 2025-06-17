@@ -33,6 +33,7 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
   const addGame = async (game: NewGame) => {
     const newGame = await apiAddGame(game);
     if (newGame) {
+      console.log("🧠 Insertion dans le contexte :", newGame);
       setGames((prev) => [...prev, newGame]);
     }
   };
@@ -40,6 +41,7 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
   const deleteGame = async (id: string) => {
     const success = await apiDeleteGame(id);
     if (success) {
+      console.log("✅ Jeu supprimé :", id);
       setGames((prev) => prev.filter((g) => g._id !== id));
     }
   };
