@@ -5,7 +5,7 @@ import s from "./GamesList.module.css";
 
 export const GamesList = () => {
   const { games, loading } = useGames();
-  const [activeGameId, setActiveGameId] = useState<number | null>(null);
+  const [activeGameId, setActiveGameId] = useState<string | null>(null);
 
   return (
     <div>
@@ -16,9 +16,9 @@ export const GamesList = () => {
         <div className={s.gamesListContainer}>
           {games.map((game) => (
             <GameCard
-              key={game.id}
+              key={game._id}
               game={game}
-              isActive={activeGameId === game.id}
+              isActive={activeGameId === game._id}
               setActiveGameId={setActiveGameId}
             />
           ))}

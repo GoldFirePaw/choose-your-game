@@ -1,20 +1,15 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
-import type { ReactNode } from 'react';
-import { getGames } from '../api/games/getGames';
-import { addGame as apiAddGame } from '../api/games/addGame';
-import { deleteGame as apiDeleteGame } from '../api/games/deleteGame';
-import type { Game } from '../types';
+import { createContext, useContext, useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import { getGames } from "../api/games/getGames";
+import { addGame as apiAddGame } from "../api/games/addGame";
+import { deleteGame as apiDeleteGame } from "../api/games/deleteGame";
+import type { Game, NewGame } from "../types";
 
 type GamesContextType = {
   games: Game[];
   loading: boolean;
-  addGame: (game: Omit<Game, 'id'>) => Promise<void>;
-  deleteGame: (id: number) => Promise<void>;
+  addGame: (game: NewGame) => Promise<void>;
+  deleteGame: (id: string) => Promise<void>;
   refetchGames: () => Promise<void>;
 };
 
@@ -35,17 +30,17 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
     fetchGames();
   }, []);
 
-  const addGame = async (game: Omit<Game, 'id'>) => {
+  const addGame = async (game: NewGame) => {
     const newGame = await apiAddGame(game);
     if (newGame) {
       setGames((prev) => [...prev, newGame]);
     }
   };
 
-  const deleteGame = async (id: number) => {
+  const deleteGame = async (id: string) => {
     const success = await apiDeleteGame(id);
     if (success) {
-      setGames((prev) => prev.filter((g) => g.id !== id));
+      setGames((prev) => prev.filter((g) => g._id !== id));
     }
   };
 
@@ -61,7 +56,7 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
 export const useGamesContext = () => {
   const context = useContext(GamesContext);
   if (!context) {
-    throw new Error('useGamesContext must be used within a <GamesProvider>');
+    throw new Error("useGamesContext must be used within a <GamesProvider>");
   }
   return context;
 };

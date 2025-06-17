@@ -6,7 +6,7 @@ import s from "./GameCard.module.css";
 type Props = {
   game: Game;
   isActive: boolean;
-  setActiveGameId: (id: number | null) => void;
+  setActiveGameId: (id: string | null) => void;
 };
 
 export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
@@ -21,11 +21,11 @@ export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
         <p>
           Joueurs : {game.minimumPlayers}–{game.maximumPlayers}
         </p>
-        <button onClick={() => setActiveGameId(isActive ? null : game.id)}>
+        <button onClick={() => setActiveGameId(isActive ? null : game._id)}>
           {isActive ? "Hide" : "Show"} players
         </button>
         <button
-          onClick={() => deleteGame(game.id)}
+          onClick={() => deleteGame(game._id)}
           style={{ backgroundColor: "red", color: "white" }}
         >
           Supprimer

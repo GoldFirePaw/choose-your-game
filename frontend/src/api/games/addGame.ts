@@ -1,6 +1,6 @@
-import type { Game } from "../../types";
+import type { Game, NewGame } from "../../types";
 
-export const addGame = async (game: Omit<Game, "id">): Promise<Game | null> => {
+export const addGame = async (game: NewGame): Promise<Game | null> => {
   const API = import.meta.env.VITE_API_BASE_URL;
 
   console.log("🔍 API utilisée :", API);

@@ -1,6 +1,6 @@
 export const addPlayerToGame = async (
-  gameId: number,
-  playerId: number
+  gameId: string,
+  playerId: string
 ): Promise<boolean> => {
   const API = import.meta.env.VITE_API_BASE_URL;
 
@@ -18,8 +18,8 @@ export const addPlayerToGame = async (
 };
 
 export const removePlayerFromGame = async (
-  gameId: number,
-  playerId: number
+  gameId: string,
+  playerId: string
 ): Promise<boolean> => {
   const API = import.meta.env.VITE_API_BASE_URL;
 

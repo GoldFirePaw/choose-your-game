@@ -14,7 +14,7 @@ export const FilteredGameList = () => {
     ? []
     : games.filter((game: Game) => {
         const ownedByAll = selectedPlayers.every((p) =>
-          game.players?.some((gp) => gp.id === p.id)
+          game.players?.some((gp) => gp._id === p._id)
         );
         const compatiblePlayerCount =
           game.minimumPlayers <= playerCount && playerCount <= game.maximumPlayers;
