@@ -10,9 +10,9 @@ export const AddGameModal = ({ onClose }: { onClose: () => void }) => {
   const [maxPlayers, setMaxPlayers] = useState(4);
   const { players } = usePlayerContext();
 
-  const [selectedPlayers, setSelectedPlayers] = useState<number[]>([]);
+  const [selectedPlayers, setSelectedPlayers] = useState<string[]>([]);
 
-  const handleTogglePlayer = (id: number) => {
+  const handleTogglePlayer = (id: string) => {
     setSelectedPlayers((prev) =>
       prev.includes(id) ? prev.filter((pid) => pid !== id) : [...prev, id]
     );

@@ -6,7 +6,7 @@ import s from "./GameCard.module.css";
 type Props = {
   game: Game;
   isActive: boolean;
-  setActiveGameId: (id: number | null) => void;
+  setActiveGameId: (id: string | null) => void;
 };
 
 export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {

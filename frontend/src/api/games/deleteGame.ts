@@ -1,4 +1,4 @@
-export const deleteGame = async (id: number): Promise<boolean> => {
+export const deleteGame = async (id: string): Promise<boolean> => {
   const API = import.meta.env.VITE_API_BASE_URL;
 
   try {

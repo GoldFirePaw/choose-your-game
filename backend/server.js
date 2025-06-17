@@ -1,151 +1,184 @@
-const express = require('express')
-const fs = require('fs')
-const path = require('path')
-const cors = require('cors')
-const bodyParser = require('body-parser')
+require("dotenv").config();
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const { MongoClient, ObjectId } = require("mongodb");
 
-const app = express()
-const PORT = process.env.PORT || 3001
-const dataFile = path.join(__dirname, 'data/games.json')
-const playersFile = path.join(__dirname, 'data/players.json');
+const app = express();
+const PORT = process.env.PORT || 3001;
+const client = new MongoClient(process.env.MONGO_URI);
+const dbName = "choose-your-game"; // Doit correspondre à ton nom de base sur Atlas
 
-app.use(cors())
-app.use(bodyParser.json())
+app.use(cors());
+app.use(bodyParser.json());
 
-// Helpers jeux
-const readGames = () => JSON.parse(fs.readFileSync(dataFile))
-const writeGames = (games) => fs.writeFileSync(dataFile, JSON.stringify(games, null, 2))
+// GET /games
+app.get("/games", async (req, res) => {
+  try {
+    await client.connect();
+    const games = await client.db(dbName).collection("games").find().toArray();
+    res.json(games);
+  } catch (err) {
+    console.error("GET /games error:", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-// Helpers joueurs
-const readPlayers = () => JSON.parse(fs.readFileSync(playersFile))
-const writePlayers = (players) => fs.writeFileSync(playersFile, JSON.stringify(players, null, 2))
+// POST /games
+app.post("/games", async (req, res) => {
+  try {
+    const newGame = { ...req.body, players: req.body.players || [] };
+    await client.connect();
+    const result = await client.db(dbName).collection("games").insertOne(newGame);
+    res.status(201).json({ ...newGame, _id: result.insertedId });
+  } catch (err) {
+    console.error("POST /games error:", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-// Routes jeux
-app.get('/games', (req, res) => {
-    res.json(readGames())
-})
+// PUT /games/:id
+app.put("/games/:id", async (req, res) => {
+  try {
+    await client.connect();
+    const updated = await client
+      .db(dbName)
+      .collection("games")
+      .findOneAndUpdate(
+        { _id: new ObjectId(req.params.id) },
+        { $set: req.body },
+        { returnDocument: "after" }
+      );
+    if (!updated.value) return res.status(404).json({ error: "Game not found" });
+    res.json(updated.value);
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-app.post('/games', (req, res) => {
-    if (!req.body || Object.keys(req.body).length === 0) {
-        return res.status(400).json({ error: 'Missing request body' })
-    }
-    const games = readGames()
-    const newGame = { ...req.body, id: Date.now() }
-    games.push(newGame)
-    writeGames(games)
-    res.status(201).json(newGame)
-})
+// DELETE /games/:id
+app.delete("/games/:id", async (req, res) => {
+  try {
+    await client.connect();
+    const result = await client
+      .db(dbName)
+      .collection("games")
+      .deleteOne({ _id: new ObjectId(req.params.id) });
+    if (result.deletedCount === 0) return res.status(404).json({ error: "Game not found" });
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-app.put('/games/:id', (req, res) => {
-    const games = readGames()
-    const id = parseInt(req.params.id)
-    const index = games.findIndex((g) => g.id === id)
-    if (index === -1) return res.status(404).json({ error: 'Game not found' })
+// GET /players
+app.get("/players", async (req, res) => {
+  try {
+    await client.connect();
+    const players = await client.db(dbName).collection("players").find().toArray();
+    res.json(players);
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-    games[index] = { ...games[index], ...req.body }
-    writeGames(games)
-    res.json(games[index])
-})
+// POST /players
+app.post("/players", async (req, res) => {
+  try {
+    const newPlayer = req.body;
+    await client.connect();
+    const result = await client.db(dbName).collection("players").insertOne(newPlayer);
+    res.status(201).json({ ...newPlayer, _id: result.insertedId });
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-app.delete('/games/:id', (req, res) => {
-    let games = readGames()
-    const id = parseInt(req.params.id)
-    const filtered = games.filter((g) => g.id !== id)
-    if (filtered.length === games.length) return res.status(404).json({ error: 'Game not found' })
+// PUT /players/:id
+app.put("/players/:id", async (req, res) => {
+  try {
+    await client.connect();
+    const updated = await client
+      .db(dbName)
+      .collection("players")
+      .findOneAndUpdate(
+        { _id: new ObjectId(req.params.id) },
+        { $set: req.body },
+        { returnDocument: "after" }
+      );
+    if (!updated.value) return res.status(404).json({ error: "Player not found" });
+    res.json(updated.value);
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-    writeGames(filtered)
-    res.json({ success: true })
-})
+// DELETE /players/:id + retire le joueur des jeux
+app.delete("/players/:id", async (req, res) => {
+  try {
+    const playerId = new ObjectId(req.params.id);
+    await client.connect();
+    const db = client.db(dbName);
 
-// Routes joueurs
-app.get('/players', (req, res) => {
-    res.json(readPlayers())
-})
+    const result = await db.collection("players").deleteOne({ _id: playerId });
+    if (result.deletedCount === 0) return res.status(404).json({ error: "Player not found" });
 
-app.post('/players', (req, res) => {
-    if (!req.body || Object.keys(req.body).length === 0) {
-        return res.status(400).json({ error: 'Missing request body' })
-    }
-    const players = readPlayers()
-    const newPlayer = { ...req.body, id: Date.now() }
-    players.push(newPlayer)
-    writePlayers(players)
-    res.status(201).json(newPlayer)
-})
+    await db.collection("games").updateMany(
+      {},
+      { $pull: { players: { _id: playerId } } }
+    );
 
-app.put('/players/:id', (req, res) => {
-    const players = readPlayers()
-    const id = parseInt(req.params.id)
-    const index = players.findIndex((p) => p.id === id)
-    if (index === -1) return res.status(404).json({ error: 'Player not found' })
+    res.json({ success: true });
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-    players[index] = { ...players[index], ...req.body }
-    writePlayers(players)
-    res.json(players[index])
-})
+// POST /games/:gameId/players
+app.post("/games/:gameId/players", async (req, res) => {
+  try {
+    const gameId = new ObjectId(req.params.gameId);
+    const playerId = new ObjectId(req.body.playerId);
 
-app.delete('/players/:id', (req, res) => {
-    let players = readPlayers()
-    const id = parseInt(req.params.id)
-    const filtered = players.filter((p) => p.id !== id)
-    if (filtered.length === players.length) return res.status(404).json({ error: 'Player not found' })
+    await client.connect();
+    const db = client.db(dbName);
+    const player = await db.collection("players").findOne({ _id: playerId });
+    if (!player) return res.status(404).json({ error: "Player not found" });
 
-    writePlayers(filtered)
+    const updated = await db.collection("games").findOneAndUpdate(
+      { _id: gameId },
+      { $addToSet: { players: player } }, // évite les doublons
+      { returnDocument: "after" }
+    );
+    if (!updated.value) return res.status(404).json({ error: "Game not found" });
 
-    // Nettoyage dans les jeux
-    let games = readGames()
-    games = games.map(game => ({
-        ...game,
-        players: game.players?.filter(p => p.id !== id) || []
-    }))
-    writeGames(games)
+    res.json({ success: true, updatedGame: updated.value });
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
-    res.json({ success: true })
-})
+// DELETE /games/:gameId/players/:playerId
+app.delete("/games/:gameId/players/:playerId", async (req, res) => {
+  try {
+    const gameId = new ObjectId(req.params.gameId);
+    const playerId = new ObjectId(req.params.playerId);
 
-// Ajouter un joueur à un jeu
-app.post('/games/:gameId/players', (req, res) => {
-    const games = readGames()
-    const players = readPlayers()
+    await client.connect();
+    const db = client.db(dbName);
+    const updated = await db.collection("games").findOneAndUpdate(
+      { _id: gameId },
+      { $pull: { players: { _id: playerId } } },
+      { returnDocument: "after" }
+    );
+    if (!updated.value) return res.status(404).json({ error: "Game not found" });
 
-    const gameId = parseInt(req.params.gameId)
-    const playerId = req.body?.playerId
-
-    const gameIndex = games.findIndex((g) => g.id === gameId)
-    if (gameIndex === -1) return res.status(404).json({ error: 'Game not found' })
-
-    const player = players.find((p) => p.id === playerId)
-    if (!player) return res.status(404).json({ error: 'Player not found' })
-
-    const existing = games[gameIndex].players || []
-    const alreadyInGame = existing.some((p) => p.id === playerId)
-    if (alreadyInGame) return res.status(400).json({ error: 'Player already in game' })
-
-    games[gameIndex].players = [...existing, player]
-    writeGames(games)
-
-    res.status(200).json({ success: true, updatedGame: games[gameIndex] })
-})
-
-// Supprimer un joueur d’un jeu
-app.delete('/games/:gameId/players/:playerId', (req, res) => {
-    const games = readGames()
-    const gameId = parseInt(req.params.gameId)
-    const playerId = parseInt(req.params.playerId)
-
-    const gameIndex = games.findIndex((g) => g.id === gameId)
-    if (gameIndex === -1) return res.status(404).json({ error: 'Game not found' })
-
-    if (!games[gameIndex].players) {
-        return res.status(404).json({ error: 'No players in this game' })
-    }
-
-    games[gameIndex].players = games[gameIndex].players.filter((p) => p.id !== playerId)
-    writeGames(games)
-
-    res.json({ success: true, updatedGame: games[gameIndex] })
-})
+    res.json({ success: true, updatedGame: updated.value });
+  } catch (err) {
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
 
 app.listen(PORT, () => {
-    console.log(`✅ Backend running on http://localhost:${PORT}`)
-})
+  console.log(`✅ Backend MongoDB running on http://localhost:${PORT}`);
+});

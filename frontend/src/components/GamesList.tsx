@@ -5,7 +5,7 @@ import s from "./GamesList.module.css";
 
 export const GamesList = () => {
   const { games, loading } = useGames();
-  const [activeGameId, setActiveGameId] = useState<number | null>(null);
+  const [activeGameId, setActiveGameId] = useState<string | null>(null);
 
   return (
     <div>
