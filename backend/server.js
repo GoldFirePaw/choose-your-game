@@ -153,7 +153,7 @@ app.post("/games/:gameId/players", async (req, res) => {
 
     const updated = await db.collection("games").findOneAndUpdate(
       { _id: gameId },
-      { $addToSet: { players: player } }, // évite les doublons
+      { $addToSet: { players: playerId.toString() } }, // évite les doublons
       { returnDocument: "after" }
     );
     if (!updated.value) return res.status(404).json({ error: "Game not found" });
@@ -174,7 +174,7 @@ app.delete("/games/:gameId/players/:playerId", async (req, res) => {
     const db = client.db(dbName);
     const updated = await db.collection("games").findOneAndUpdate(
       { _id: gameId },
-      { $pull: { players: { _id: playerId.toString } } },
+      { $pull: { players: { _id: playerId.toString() } } },
       { returnDocument: "after" }
     );
     if (!updated.value) return res.status(404).json({ error: "Game not found" });
