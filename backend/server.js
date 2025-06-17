@@ -29,8 +29,11 @@ app.post("/games", async (req, res) => {
   try {
     const newGame = { ...req.body, players: req.body.players || [] };
     await client.connect();
-    const result = await client.db(dbName).collection("games").insertOne(newGame);
-    res.status(201).json({ ...newGame, _id: result.insertedId });
+    const result = await client.db(dbName).collection("games").insertOne({
+        ...newGame,
+        _id: new ObjectId(),
+    });    
+res.status(201).json({ ...newGame, _id: result.insertedId });
   } catch (err) {
     console.error("POST /games error:", err);
     res.status(500).json({ error: "Erreur serveur" });
@@ -87,8 +90,11 @@ app.post("/players", async (req, res) => {
   try {
     const newPlayer = req.body;
     await client.connect();
-    const result = await client.db(dbName).collection("players").insertOne(newPlayer);
-    res.status(201).json({ ...newPlayer, _id: result.insertedId });
+    const result = await client.db(dbName).collection("players").insertOne({
+        ...newPlayer,
+        _id: new ObjectId(),
+    });    
+res.status(201).json({ ...newPlayer, _id: result.insertedId });
   } catch (err) {
     res.status(500).json({ error: "Erreur serveur" });
   }
