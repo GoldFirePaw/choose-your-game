@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-import { SelectedPlayersFilter } from './SelectedPlayersFilter';
-import { useGamesContext } from '../contexts/gamesContext';
-import type { Game, Player } from '../types';
+import { SelectedPlayersFilter } from "./SelectedPlayersFilter";
+import { useGamesContext } from "../contexts/gamesContext";
+import type { Game, Player } from "../types";
 
 export const FilteredGameList = () => {
   const { games, loading } = useGamesContext();
@@ -10,17 +10,19 @@ export const FilteredGameList = () => {
 
   const playerCount = selectedPlayers.length;
 
-  const filteredGames = playerCount === 0
-    ? []
-    : games.filter((game: Game) => {
-        const ownedByAll = selectedPlayers.every((p) =>
-          game.players?.some((gp) => gp._id === p._id)
-        );
-        const compatiblePlayerCount =
-          game.minimumPlayers <= playerCount && playerCount <= game.maximumPlayers;
+  const filteredGames =
+    playerCount === 0
+      ? []
+      : games.filter((game: Game) => {
+          const ownedByAll = selectedPlayers.every((p) =>
+            game.players?.includes(p._id)
+          );
+          const compatiblePlayerCount =
+            game.minimumPlayers <= playerCount &&
+            playerCount <= game.maximumPlayers;
 
-        return ownedByAll && compatiblePlayerCount;
-      });
+          return ownedByAll && compatiblePlayerCount;
+        });
 
   return (
     <div>
@@ -29,7 +31,9 @@ export const FilteredGameList = () => {
         onChange={setSelectedPlayers}
       />
 
-      <h2>Jeux compatibles avec {playerCount} joueur{playerCount > 1 ? 's' : ''}</h2>
+      <h2>
+        Jeux compatibles avec {playerCount} joueur{playerCount > 1 ? "s" : ""}
+      </h2>
       {loading ? (
         <p>Chargement des jeux...</p>
       ) : filteredGames.length > 0 ? (

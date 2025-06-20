@@ -3,7 +3,6 @@ export const addPlayerToGame = async (
   playerId: string
 ): Promise<boolean> => {
   const API = import.meta.env.VITE_API_BASE_URL;
-
   try {
     const response = await fetch(`${API}/games/${gameId}/players`, {
       method: "POST",
@@ -22,7 +21,6 @@ export const removePlayerFromGame = async (
   playerId: string
 ): Promise<boolean> => {
   const API = import.meta.env.VITE_API_BASE_URL;
-
   try {
     const response = await fetch(`${API}/games/${gameId}/players/${playerId}`, {
       method: "DELETE",

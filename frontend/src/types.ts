@@ -3,7 +3,8 @@ export type Game = {
   name: string;
   minimumPlayers: number;
   maximumPlayers: number;
-  players?: Player[];
+  players: string[];
+  populatedPlayers?: Player[];
 };
 
 export type Player = {
@@ -15,5 +16,5 @@ export type NewGame = {
   name: string;
   minimumPlayers: number;
   maximumPlayers: number;
-  players: Player[];
+  players?: string[];
 };

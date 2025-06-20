@@ -29,11 +29,8 @@ app.post("/games", async (req, res) => {
   try {
     const newGame = { ...req.body, players: req.body.players || [] };
     await client.connect();
-    const result = await client.db(dbName).collection("games").insertOne({
-        ...newGame,
-        _id: new ObjectId(),
-    });    
-res.status(201).json({ ...newGame, _id: result.insertedId });
+    const result = await client.db(dbName).collection("games").insertOne(newGame);
+    res.status(201).json({ ...newGame, _id: result.insertedId });  
   } catch (err) {
     console.error("POST /games error:", err);
     res.status(500).json({ error: "Erreur serveur" });
@@ -131,7 +128,7 @@ app.delete("/players/:id", async (req, res) => {
 
     await db.collection("games").updateMany(
     {},
-    { $pull: { players: { _id: playerId.toString() } } }
+    { $pull: { players: { _id: playerId} } }
     );
 
     res.json({ success: true });
@@ -144,22 +141,23 @@ app.delete("/players/:id", async (req, res) => {
 app.post("/games/:gameId/players", async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.gameId);
-    const playerId = new ObjectId(req.body.playerId);
+    const playerId = req.body.playerId; // laissé en string
+    console.log("📥 Requête POST reçue pour :", gameId, playerId);
 
     await client.connect();
     const db = client.db(dbName);
-    const player = await db.collection("players").findOne({ _id: playerId });
-    if (!player) return res.status(404).json({ error: "Player not found" });
 
     const updated = await db.collection("games").findOneAndUpdate(
       { _id: gameId },
-      { $addToSet: { players: playerId.toString() } }, // évite les doublons
+      { $addToSet: { players: playerId } }, // juste l’id, pas tout l’objet
       { returnDocument: "after" }
     );
-    if (!updated.value) return res.status(404).json({ error: "Game not found" });
+
+    if (!updated._id) return res.status(404).json({ error: "Game not found" });
 
     res.json({ success: true, updatedGame: updated.value });
   } catch (err) {
+    console.error("POST /games/:gameId/players error:", err);
     res.status(500).json({ error: "Erreur serveur" });
   }
 });
@@ -168,19 +166,22 @@ app.post("/games/:gameId/players", async (req, res) => {
 app.delete("/games/:gameId/players/:playerId", async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.gameId);
-    const playerId = new ObjectId(req.params.playerId);
+    const playerId = req.params.playerId; // string
 
     await client.connect();
     const db = client.db(dbName);
+
     const updated = await db.collection("games").findOneAndUpdate(
       { _id: gameId },
-      { $pull: { players: { _id: playerId.toString() } } },
+      { $pull: { players: playerId } }, // plus besoin de faire { _id: ... }
       { returnDocument: "after" }
     );
-    if (!updated.value) return res.status(404).json({ error: "Game not found" });
+
+    if (!updated._id) return res.status(404).json({ error: "Game not found" });
 
     res.json({ success: true, updatedGame: updated.value });
   } catch (err) {
+    console.error("DELETE /games/:gameId/players/:playerId error:", err);
     res.status(500).json({ error: "Erreur serveur" });
   }
 });

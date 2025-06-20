@@ -19,24 +19,22 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
   const [isUpdating, setIsUpdating] = useState(false);
 
   const game = games.find((g) => g._id === gameId);
-
   if (!game) return null;
 
-  const isPlayerInGame = (player: Player) =>
-    game.players?.some((p) => p._id === player._id);
+  const isPlayerInGame = (playerId: string) =>
+    (game.players ?? []).some((p) => p === playerId);
 
   const handleToggle = async (player: Player) => {
     if (isUpdating) return;
     setIsUpdating(true);
 
-    const alreadyIn = isPlayerInGame(player);
-
+    const alreadyIn = isPlayerInGame(player._id);
     const success = alreadyIn
       ? await removePlayerFromGame(game._id, player._id)
       : await addPlayerToGame(game._id, player._id);
 
     if (success) {
-      await refetchGames(); // met à jour le contexte
+      await refetchGames();
     }
 
     setIsUpdating(false);
@@ -52,7 +50,7 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
               <label>
                 <input
                   type="checkbox"
-                  checked={isPlayerInGame(player)}
+                  checked={isPlayerInGame(player._id)}
                   onChange={() => handleToggle(player)}
                 />
                 {player.name}

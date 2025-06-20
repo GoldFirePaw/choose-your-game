@@ -3,6 +3,10 @@ import type { ReactNode } from "react";
 import { getGames } from "../api/games/getGames";
 import { addGame as apiAddGame } from "../api/games/addGame";
 import { deleteGame as apiDeleteGame } from "../api/games/deleteGame";
+import {
+  removePlayerFromGame as apiRemovePlayerFromGame,
+  addPlayerToGame as apiAddPlayerToGame,
+} from "../api/games/updatePlayers";
 import type { Game, NewGame } from "../types";
 
 type GamesContextType = {
@@ -11,6 +15,8 @@ type GamesContextType = {
   addGame: (game: NewGame) => Promise<void>;
   deleteGame: (id: string) => Promise<void>;
   refetchGames: () => Promise<void>;
+  removePlayerFromGame: (playerId: string, gameId: string) => Promise<void>;
+  addPlayerToGame: (gameId: string, playerId: string) => Promise<void>;
 };
 
 const GamesContext = createContext<GamesContextType | undefined>(undefined);
@@ -21,9 +27,14 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchGames = async () => {
     setLoading(true);
-    const data = await getGames();
-    setGames(data);
-    setLoading(false);
+    try {
+      const data = await getGames();
+      setGames(data);
+    } catch (error) {
+      console.error("❌ Erreur fetchGames :", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -33,7 +44,6 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
   const addGame = async (game: NewGame) => {
     const newGame = await apiAddGame(game);
     if (newGame) {
-      console.log("🧠 Insertion dans le contexte :", newGame);
       setGames((prev) => [...prev, newGame]);
     }
   };
@@ -41,14 +51,35 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
   const deleteGame = async (id: string) => {
     const success = await apiDeleteGame(id);
     if (success) {
-      console.log("✅ Jeu supprimé :", id);
       setGames((prev) => prev.filter((g) => g._id !== id));
+    }
+  };
+
+  const removePlayerFromGame = async (playerId: string, gameId: string) => {
+    const success = await apiRemovePlayerFromGame(gameId, playerId);
+    if (success) {
+      await fetchGames();
+    }
+  };
+
+  const addPlayerToGame = async (gameId: string, playerId: string) => {
+    const success = await apiAddPlayerToGame(gameId, playerId);
+    if (success) {
+      await fetchGames();
     }
   };
 
   return (
     <GamesContext.Provider
-      value={{ games, loading, addGame, deleteGame, refetchGames: fetchGames }}
+      value={{
+        games,
+        loading,
+        addGame,
+        deleteGame,
+        refetchGames: fetchGames,
+        removePlayerFromGame,
+        addPlayerToGame,
+      }}
     >
       {children}
     </GamesContext.Provider>
