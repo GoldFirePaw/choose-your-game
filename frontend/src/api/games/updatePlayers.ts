@@ -21,6 +21,7 @@ export const removePlayerFromGame = async (
   gameId: string,
   playerId: string
 ): Promise<boolean> => {
+  console.log("🚨 Suppression d'un joueur du jeu :", gameId, playerId);
   const API = import.meta.env.VITE_API_BASE_URL;
 
   try {

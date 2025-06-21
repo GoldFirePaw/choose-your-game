@@ -1,8 +1,9 @@
-import { useState } from 'react';
-import { usePlayerContext } from '../contexts/playersContext';
+import { useState } from "react";
+import { usePlayerContext } from "../../contexts/playersContext";
+import s from "./AddPlayerForm.module.css";
 
 export const AddPlayerForm = () => {
-  const [name, setName] = useState('');
+  const [name, setName] = useState("");
   const { addPlayer } = usePlayerContext();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -11,20 +12,23 @@ export const AddPlayerForm = () => {
     if (!trimmedName) return;
 
     await addPlayer(trimmedName);
-    setName('');
+    setName("");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Ajouter un joueur</h2>
+    <form onSubmit={handleSubmit} className={s.form}>
+      <h2 className={s.title}>Ajouter un joueur</h2>
       <input
         type="text"
         placeholder="Nom du joueur"
         value={name}
         onChange={(e) => setName(e.target.value)}
         required
+        className={s.input}
       />
-      <button type="submit">Ajouter</button>
+      <button type="submit" className={s.button}>
+        Ajouter
+      </button>
     </form>
   );
 };

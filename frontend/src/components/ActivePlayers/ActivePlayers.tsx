@@ -1,14 +1,15 @@
-import { usePlayerContext } from "../contexts/playersContext";
-import type { Player } from "../types";
-import s from "./selectedPlayersFilter.module.css";
+import { usePlayerContext } from "../../contexts/playersContext";
+import type { Player } from "../../types";
+import s from "./ActivePlayers.module.css";
+import { SecondaryButton } from "../Buttons/Button";
 
 type Props = {
   selected: Player[];
   onChange: (players: Player[]) => void;
 };
 
-export const SelectedPlayersFilter = ({ selected, onChange }: Props) => {
-  const { players } = usePlayerContext();
+export const ActivePlayers = ({ selected, onChange }: Props) => {
+  const { players, deletePlayer } = usePlayerContext();
 
   const toggle = (player: Player) => {
     const isSelected = selected.some((p) => p._id === player._id);
@@ -24,15 +25,19 @@ export const SelectedPlayersFilter = ({ selected, onChange }: Props) => {
       <h3>Joueurs présents</h3>
       <div className={s.playersContainer}>
         {players.map((player) => (
-          <div key={player._id}>
+          <div className={s.playerContainer} key={player._id}>
             <label>
               <input
                 type="checkbox"
                 checked={selected.some((p) => p._id === player._id)}
                 onChange={() => toggle(player)}
               />
-              {player.name}
             </label>
+            <div onClick={() => console.log("show details")}>{player.name}</div>
+            <SecondaryButton
+              onClick={() => deletePlayer(player._id)}
+              label={"✖️"}
+            />
           </div>
         ))}
       </div>
