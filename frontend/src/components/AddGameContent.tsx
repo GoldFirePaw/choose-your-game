@@ -62,7 +62,7 @@ export const AddGameContent = () => {
           <input
             type="number"
             value={maxPlayers}
-            min={1}
+            min={4}
             onChange={(e) => setMaxPlayers(Number(e.target.value))}
           />
         </label>
