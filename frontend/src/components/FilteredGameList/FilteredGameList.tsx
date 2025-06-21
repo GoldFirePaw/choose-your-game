@@ -1,5 +1,5 @@
-import { useGamesContext } from "../contexts/gamesContext";
-import type { Game } from "../types";
+import { useGamesContext } from "../../contexts/gamesContext";
+import type { Game } from "../../types";
 import s from "./FilteredGameList.module.css";
 
 type FilteredGameListProps = {

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useGamesContext } from "../contexts/gamesContext";
+import { useGamesContext } from "../../contexts/gamesContext";
 import s from "./AddGameForm.module.css";
-import { Button } from "./Button";
+import { Button } from "../Buttons/Button";
 
 export const AddGameForm = () => {
   const [name, setName] = useState("");

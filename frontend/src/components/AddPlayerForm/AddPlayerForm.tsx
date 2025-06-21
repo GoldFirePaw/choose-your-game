@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { usePlayerContext } from "../contexts/playersContext";
+import { usePlayerContext } from "../../contexts/playersContext";
 import s from "./AddPlayerForm.module.css";
 
 export const AddPlayerForm = () => {

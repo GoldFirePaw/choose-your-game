@@ -1,7 +1,8 @@
-import { useGamesContext } from "../contexts/gamesContext";
-import { GamePlayersCheckboxes } from "./GamePlayersCheckboxes";
-import type { Game } from "../types";
+import { useGamesContext } from "../../contexts/gamesContext";
+import { GamePlayersCheckboxes } from "../GamePlayersCheckboxes/GamePlayersCheckboxes";
+import type { Game } from "../../types";
 import s from "./GameCard.module.css";
+import { Button, SecondaryButton } from "../Buttons/Button";
 
 type Props = {
   game: Game;
@@ -14,24 +15,22 @@ export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
   console.log("🧾 Affichage carte jeu :", game);
 
   return (
-    <div className={s.gameCardContainer}>
+    <>
       <div>
-        <h3>{game.name}</h3>
+        <h3 className={s.title}>{game.name}</h3>
         <p>
           Joueurs : {game.minimumPlayers}–{game.maximumPlayers}
         </p>
-        <button onClick={() => setActiveGameId(isActive ? null : game._id)}>
-          {isActive ? "Hide" : "Show"} players
-        </button>
-        <button
+        <Button
+          label={`${isActive ? "Hide" : "Show"} players`}
+          onClick={() => setActiveGameId(isActive ? null : game._id)}
+        />
+        <SecondaryButton
+          label="✖️"
           onClick={() => {
-            console.log("🗑️ Suppression demandée :", game._id);
             game._id && deleteGame(game._id);
           }}
-          style={{ backgroundColor: "red", color: "white" }}
-        >
-          Supprimer
-        </button>
+        />
       </div>
 
       {isActive && (
@@ -40,6 +39,6 @@ export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
           setDisplayPlayers={() => setActiveGameId(null)}
         />
       )}
-    </div>
+    </>
   );
 };

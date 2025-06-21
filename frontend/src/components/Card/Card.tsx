@@ -1,18 +1,22 @@
 import { ActivePlayers } from "../ActivePlayers/ActivePlayers";
-import { AddGameForm } from "../AddGameForm";
-import { AddPlayerForm } from "../AddPlayerForm";
-import { FilteredGameList } from "../FilteredGameList";
-import { GamesList } from "../GamesList";
+import { AddGameForm } from "../AddGameForm/AddGameForm";
+import { AddPlayerForm } from "../AddPlayerForm/AddPlayerForm";
+import { FilteredGameList } from "../FilteredGameList/FilteredGameList";
+import { GamesList } from "../GamesList/GamesList";
 import s from "./Card.module.css";
 import cx from "classnames";
 import type { Player } from "../../types";
-import { PlayersList } from "../PlayersList";
+import { GameCard } from "../GameCard/GameCard";
+import type { Game } from "../../types";
 
 type CardProps = {
   content: ContentType;
   selected?: Player[];
   onChange?: (players: Player[]) => void;
   selectedPlayers?: Player[];
+  game?: Game;
+  isActive?: boolean;
+  setActiveGameId?: (id: string | null) => void;
 };
 
 type ContentType =
@@ -21,13 +25,17 @@ type ContentType =
   | "addAGame"
   | "addAPlayer"
   | "filteredGameList"
-  | "playersList";
+  | "playersList"
+  | "gameCard";
 
 export const Card = ({
   content,
   selected,
   onChange,
   selectedPlayers,
+  game,
+  isActive,
+  setActiveGameId,
 }: CardProps) => {
   let cardContent;
   switch (content) {
@@ -51,13 +59,22 @@ export const Card = ({
         <FilteredGameList selectedPlayers={selectedPlayers} />
       );
       break;
-    case "playersList":
-      cardContent = <PlayersList />;
+    case "gameCard":
+      cardContent = game && isActive !== undefined && setActiveGameId && (
+        <GameCard
+          key={game._id}
+          game={game}
+          isActive={isActive}
+          setActiveGameId={setActiveGameId}
+        />
+      );
       break;
     default:
       cardContent = "Default content goes here";
       break;
   }
+
+  console.log("game", game && isActive && setActiveGameId);
 
   return (
     <div className={cx(s.cardContainer, content && s[content])}>

@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import {
   addPlayerToGame,
   removePlayerFromGame,
-} from "../api/games/updatePlayers";
-import { useGamesContext } from "../contexts/gamesContext";
-import { usePlayerContext } from "../contexts/playersContext";
-import type { Player } from "../types";
+} from "../../api/games/updatePlayers";
+import { useGamesContext } from "../../contexts/gamesContext";
+import { usePlayerContext } from "../../contexts/playersContext";
+import type { Player } from "../../types";
 import s from "./gamePlayersCheckboxes.module.css";
 
 type Props = {

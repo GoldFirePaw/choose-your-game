@@ -3,3 +3,9 @@
   flex-direction: row;
   gap: 1rem;
 }
+
+.addFormsContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}

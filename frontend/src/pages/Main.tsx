@@ -17,9 +17,10 @@ export const Main = () => {
         <Card content="filteredGameList" selectedPlayers={selectedPlayers} />
       </div>
       <Card content="gamesList" />
-      <Card content="addAGame" />
-      <Card content="playersList" />
-      <Card content="addAPlayer" />
+      <div className={s.addFormsContainer}>
+        <Card content="addAGame" />
+        <Card content="addAPlayer" />
+      </div>
     </>
   );
 };
