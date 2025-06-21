@@ -1,0 +1,16 @@
+.modalContent form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.checkboxItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

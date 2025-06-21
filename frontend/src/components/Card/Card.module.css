@@ -1,0 +1,28 @@
+.cardContainer {
+    display: flex;
+    flex-direction: column;
+    border-radius: 32px;
+    box-shadow: var(--box-shadow-default), var(--box-shadow-inner);
+    padding: 16px;
+    margin: 16px;
+}
+
+.activePlayers {
+    background-color: var(--color-background-soft);
+    color: var(--color-text-main);
+    flex : 1;
+
+}
+
+.gamesList,
+.addAGame {
+    background-color: var(--color-surface);
+    color: var(--color-text-main);
+}
+
+.filteredGameList {
+    background-color: var(--color-surface-dark);
+    color: var(--color-primary-text);
+    flex : 1;
+
+}

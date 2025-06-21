@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useGamesContext } from "../contexts/gamesContext";
 import s from "./AddGameForm.module.css";
+import { Button } from "./Button";
 
 export const AddGameForm = () => {
   const [name, setName] = useState("");
@@ -46,9 +47,8 @@ export const AddGameForm = () => {
         required
         className={s.input}
       />
-      <button type="submit" className={s.button}>
-        Ajouter
-      </button>
+      <Button onClick={() => handleSubmit} type="submit" label={"Ajouter"} />
+      Ajouter
     </form>
   );
 };

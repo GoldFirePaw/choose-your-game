@@ -156,7 +156,7 @@ app.post("/games/:gameId/players", async (req, res) => {
       { $addToSet: { players: playerId.toString() } }, // évite les doublons
       { returnDocument: "after" }
     );
-    if (!updated.value) return res.status(404).json({ error: "Game not found" });
+    if (!updated._id) return res.status(404).json({ error: "Game not found" });
 
     res.json({ success: true, updatedGame: updated.value });
   } catch (err) {
@@ -168,16 +168,16 @@ app.post("/games/:gameId/players", async (req, res) => {
 app.delete("/games/:gameId/players/:playerId", async (req, res) => {
   try {
     const gameId = new ObjectId(req.params.gameId);
-    const playerId = new ObjectId(req.params.playerId);
-
+    const playerId = req.params.playerId;
+    console.log("Deleting player from game:", gameId, playerId);
     await client.connect();
     const db = client.db(dbName);
     const updated = await db.collection("games").findOneAndUpdate(
       { _id: gameId },
-      { $pull: { players: { _id: playerId.toString() } } },
+      { $pull: { players: playerId } },
       { returnDocument: "after" }
     );
-    if (!updated.value) return res.status(404).json({ error: "Game not found" });
+    if (!updated._id) return res.status(404).json({ error: "Game not found" });
 
     res.json({ success: true, updatedGame: updated.value });
   } catch (err) {

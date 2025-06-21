@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   addPlayerToGame,
   removePlayerFromGame,
@@ -22,11 +22,21 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
 
   if (!game) return null;
 
+  console.log(
+    game._id,
+    "🔍 Vérification du jeu dans le contexte",
+    game.players,
+    "joueurs :"
+  );
+
   const isPlayerInGame = (player: Player) =>
-    game.players?.some((p) => p._id === player._id);
+    Array.isArray(game.players) && game.players.includes(player._id);
 
   const handleToggle = async (player: Player) => {
     if (isUpdating) return;
+    console.log(
+      `🔄 Changement de joueur pour le jeu ${game.name} (${game._id}) : ${player.name} (${player._id})`
+    );
     setIsUpdating(true);
 
     const alreadyIn = isPlayerInGame(player);
@@ -41,6 +51,13 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
 
     setIsUpdating(false);
   };
+
+  useEffect(() => {
+    players.map((p) =>
+      console.log(`🧑 Joueur : ${p.name} (${p._id})`, isPlayerInGame(p))
+    ),
+      "🔍 Vérification de la présence du joueur dans le jeu";
+  }, [gameId, players, games]);
 
   return (
     <div className={s.popperBackdrop} onClick={() => setDisplayPlayers(false)}>

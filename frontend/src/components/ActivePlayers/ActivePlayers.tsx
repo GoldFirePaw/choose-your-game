@@ -1,13 +1,13 @@
-import { usePlayerContext } from "../contexts/playersContext";
-import type { Player } from "../types";
-import s from "./selectedPlayersFilter.module.css";
+import { usePlayerContext } from "../../contexts/playersContext";
+import type { Player } from "../../types";
+import s from "./ActivePlayers.module.css";
 
 type Props = {
   selected: Player[];
   onChange: (players: Player[]) => void;
 };
 
-export const SelectedPlayersFilter = ({ selected, onChange }: Props) => {
+export const ActivePlayers = ({ selected, onChange }: Props) => {
   const { players } = usePlayerContext();
 
   const toggle = (player: Player) => {
