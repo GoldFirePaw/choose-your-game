@@ -6,7 +6,7 @@ import { Button } from "./Button";
 export const AddGameForm = () => {
   const [name, setName] = useState("");
   const [min, setMin] = useState(1);
-  const [max, setMax] = useState(1);
+  const [max, setMax] = useState(4);
   const { addGame } = useGamesContext();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,7 +20,7 @@ export const AddGameForm = () => {
 
     setName("");
     setMin(1);
-    setMax(1);
+    setMax(4);
   };
 
   return (
