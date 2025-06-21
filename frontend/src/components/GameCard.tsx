@@ -15,9 +15,7 @@ export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
 
   return (
     <div className={s.gameCardContainer}>
-      <div
-        style={{ border: "1px solid #ccc", margin: "1rem", padding: "1rem" }}
-      >
+      <div>
         <h3>{game.name}</h3>
         <p>
           Joueurs : {game.minimumPlayers}–{game.maximumPlayers}

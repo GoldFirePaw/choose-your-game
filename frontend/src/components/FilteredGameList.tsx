@@ -1,8 +1,9 @@
 import { useState } from 'react';
 
-import { SelectedPlayersFilter } from './SelectedPlayersFilter';
-import { useGamesContext } from '../contexts/gamesContext';
-import type { Game, Player } from '../types';
+import { SelectedPlayersFilter } from "./SelectedPlayersFilter";
+import { useGamesContext } from "../contexts/gamesContext";
+import type { Game, Player } from "../types";
+import s from "./FilteredGameList.module.css";
 
 export const FilteredGameList = () => {
   const { games, loading } = useGamesContext();
@@ -23,19 +24,25 @@ export const FilteredGameList = () => {
       });
 
   return (
-    <div>
+    <div className={s.container}>
       <SelectedPlayersFilter
         selected={selectedPlayers}
         onChange={setSelectedPlayers}
       />
 
-      <h2>Jeux compatibles avec {playerCount} joueur{playerCount > 1 ? 's' : ''}</h2>
+      <h2 className={s.title}>
+        Jeux compatibles avec {playerCount} joueur{playerCount > 1 ? "s" : ""}
+      </h2>
       {loading ? (
-        <p>Chargement des jeux...</p>
+        <p className={s.loading}>Chargement des jeux...</p>
       ) : filteredGames.length > 0 ? (
-        filteredGames.map((game) => <div> {game.name} </div>)
+        filteredGames.map((game) => (
+          <div key={game._id} className={s.gameItem}>
+            {game.name}
+          </div>
+        ))
       ) : (
-        <p>Aucun jeu compatible pour ce groupe 😢</p>
+        <p className={s.noResults}>Aucun jeu compatible pour ce groupe 😢</p>
       )}
     </div>
   );
