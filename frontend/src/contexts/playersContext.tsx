@@ -10,6 +10,8 @@ type PlayersContextType = {
   loading: boolean;
   addPlayer: (name: string) => Promise<void>;
   deletePlayer: (id: string) => Promise<void>;
+  selectedPlayerId: string | null;
+  handleSelectPlayer: (id: string | null) => void;
 };
 
 const PlayersContext = createContext<PlayersContextType | undefined>(undefined);
@@ -17,6 +19,7 @@ const PlayersContext = createContext<PlayersContextType | undefined>(undefined);
 export const PlayersProvider = ({ children }: { children: ReactNode }) => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
   useEffect(() => {
     getPlayers().then((data) => {
@@ -39,9 +42,20 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const handleSelectPlayer = (id: string | null) => {
+    setSelectedPlayerId(id);
+  };
+
   return (
     <PlayersContext.Provider
-      value={{ players, loading, addPlayer, deletePlayer }}
+      value={{
+        players,
+        loading,
+        addPlayer,
+        deletePlayer,
+        selectedPlayerId,
+        handleSelectPlayer,
+      }}
     >
       {children}
     </PlayersContext.Provider>

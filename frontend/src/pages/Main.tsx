@@ -2,9 +2,14 @@ import { useState } from "react";
 import { Card } from "../components/Card/Card";
 import type { Player } from "../types";
 import s from "./Main.module.css";
+import { Modal } from "../components/Modals/Modal";
+import { usePlayerContext } from "../contexts/playersContext";
 
 export const Main = () => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
+  const [modalContent, setModalContent] = useState("");
+
+  const { selectedPlayerId } = usePlayerContext();
 
   return (
     <>
@@ -13,6 +18,7 @@ export const Main = () => {
           content={"activePlayers"}
           selected={selectedPlayers}
           onChange={setSelectedPlayers}
+          setModalContent={setModalContent}
         />
         <Card content="filteredGameList" selectedPlayers={selectedPlayers} />
       </div>
@@ -21,6 +27,13 @@ export const Main = () => {
         <Card content="addAGame" />
         <Card content="addAPlayer" />
       </div>
+      {modalContent !== "" && selectedPlayerId && (
+        <Modal
+          modalContent={modalContent}
+          onClose={() => setModalContent("")}
+          selectedPlayerId={selectedPlayerId}
+        />
+      )}
     </>
   );
 };
