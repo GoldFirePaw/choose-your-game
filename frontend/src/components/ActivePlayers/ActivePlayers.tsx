@@ -1,15 +1,19 @@
 import { usePlayerContext } from "../../contexts/playersContext";
 import type { Player } from "../../types";
 import s from "./ActivePlayers.module.css";
-import { SecondaryButton } from "../Buttons/Button";
 
 type Props = {
   selected: Player[];
   onChange: (players: Player[]) => void;
+  setModalContent: (content: string) => void;
 };
 
-export const ActivePlayers = ({ selected, onChange }: Props) => {
-  const { players, deletePlayer } = usePlayerContext();
+export const ActivePlayers = ({
+  selected,
+  onChange,
+  setModalContent,
+}: Props) => {
+  const { players, handleSelectPlayer } = usePlayerContext();
 
   const toggle = (player: Player) => {
     const isSelected = selected.some((p) => p._id === player._id);
@@ -20,24 +24,32 @@ export const ActivePlayers = ({ selected, onChange }: Props) => {
     onChange(newSelection);
   };
 
+  const handleClick = (playerId: string) => {
+    handleSelectPlayer(playerId);
+    setModalContent("playerDetails");
+    console.log("🔍 Affichage des détails du joueur");
+  };
+
   return (
     <div>
       <h3>Joueurs présents</h3>
       <div className={s.playersContainer}>
         {players.map((player) => (
-          <div className={s.playerContainer} key={player._id}>
-            <label>
+          <div
+            onClick={() => {
+              handleClick(player._id);
+            }}
+            className={s.playerContainer}
+            key={player._id}
+          >
+            <label onClick={(e) => e.stopPropagation()}>
               <input
                 type="checkbox"
                 checked={selected.some((p) => p._id === player._id)}
                 onChange={() => toggle(player)}
               />
             </label>
-            <div onClick={() => console.log("show details")}>{player.name}</div>
-            <SecondaryButton
-              onClick={() => deletePlayer(player._id)}
-              label={"✖️"}
-            />
+            {player.name}
           </div>
         ))}
       </div>

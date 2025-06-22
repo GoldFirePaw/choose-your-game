@@ -17,6 +17,7 @@ type CardProps = {
   game?: Game;
   isActive?: boolean;
   setActiveGameId?: (id: string | null) => void;
+  setModalContent?: (content: string) => void;
 };
 
 type ContentType =
@@ -36,6 +37,7 @@ export const Card = ({
   game,
   isActive,
   setActiveGameId,
+  setModalContent,
 }: CardProps) => {
   let cardContent;
   switch (content) {
@@ -43,10 +45,13 @@ export const Card = ({
       cardContent = <GamesList />;
       break;
     case "activePlayers":
-      cardContent =
-        onChange && selected ? (
-          <ActivePlayers selected={selected} onChange={onChange} />
-        ) : null;
+      cardContent = onChange && selected && setModalContent && (
+        <ActivePlayers
+          setModalContent={setModalContent}
+          selected={selected}
+          onChange={onChange}
+        />
+      );
       break;
     case "addAGame":
       cardContent = <AddGameForm />;
@@ -73,8 +78,6 @@ export const Card = ({
       cardContent = "Default content goes here";
       break;
   }
-
-  console.log("game", game && isActive && setActiveGameId);
 
   return (
     <div className={cx(s.cardContainer, content && s[content])}>
