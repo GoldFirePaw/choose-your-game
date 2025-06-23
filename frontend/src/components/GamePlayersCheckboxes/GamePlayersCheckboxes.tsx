@@ -1,12 +1,8 @@
 import { useEffect, useState } from "react";
-import {
-  addPlayerToGame,
-  removePlayerFromGame,
-} from "../../api/games/updatePlayers";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { usePlayerContext } from "../../contexts/playersContext";
-import type { Player } from "../../types";
 import s from "./gamePlayersCheckboxes.module.css";
+import { Button } from "../Buttons/Button";
 
 type Props = {
   gameId: string;
@@ -15,74 +11,69 @@ type Props = {
 
 export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
   const { players } = usePlayerContext();
-  const { games, refetchGames } = useGamesContext();
-  const [isUpdating, setIsUpdating] = useState(false);
+  const { games, updateGame } = useGamesContext();
+  const [localPlayerIds, setLocalPlayerIds] = useState<string[]>([]);
 
   const game = games.find((g) => g._id === gameId);
-
   if (!game) return null;
 
-  console.log(
-    game._id,
-    "🔍 Vérification du jeu dans le contexte",
-    game.players,
-    "joueurs :"
-  );
-
-  const isPlayerInGame = (player: Player) =>
-    Array.isArray(game.players) && game.players.includes(player._id);
-
-  const handleToggle = async (player: Player) => {
-    if (isUpdating) return;
-    console.log(
-      `🔄 Changement de joueur pour le jeu ${game.name} (${game._id}) : ${player.name} (${player._id})`
-    );
-    setIsUpdating(true);
-
-    const alreadyIn = isPlayerInGame(player);
-
-    const success = alreadyIn
-      ? await removePlayerFromGame(game._id, player._id)
-      : await addPlayerToGame(game._id, player._id);
-
-    if (success) {
-      await refetchGames(); // met à jour le contexte
+  // Remplit le state local à partir du jeu actuel
+  useEffect(() => {
+    const updatedGame = games.find((g) => g._id === gameId);
+    if (updatedGame) {
+      setLocalPlayerIds([...(updatedGame.players ?? [])]);
     }
+  }, [gameId, games]); // <- on écoute TOUT le tableau
 
-    setIsUpdating(false);
+  const togglePlayer = (playerId: string) => {
+    setLocalPlayerIds((prev) =>
+      prev.includes(playerId)
+        ? prev.filter((id) => id !== playerId)
+        : [...prev, playerId]
+    );
   };
 
-  useEffect(() => {
-    players.map((p) =>
-      console.log(`🧑 Joueur : ${p.name} (${p._id})`, isPlayerInGame(p))
-    ),
-      "🔍 Vérification de la présence du joueur dans le jeu";
-  }, [gameId, players, games]);
+  const handleSubmit = async () => {
+    // Nettoyage des doublons au cas où (par sécurité)
+    const uniquePlayerIds = Array.from(new Set(localPlayerIds));
+
+    console.log("🧾 Soumission des joueurs sélectionnés :", uniquePlayerIds);
+
+    await updateGame(game._id, {
+      name: game.name,
+      minimumPlayers: game.minimumPlayers,
+      maximumPlayers: game.maximumPlayers,
+      players: uniquePlayerIds,
+    });
+
+    setDisplayPlayers(false);
+  };
 
   return (
     <div className={s.popperBackdrop} onClick={() => setDisplayPlayers(false)}>
       <div className={s.popperContainer} onClick={(e) => e.stopPropagation()}>
         <h4>Joueurs possédant le jeu :</h4>
         <div>
-          {players.map((player) => (
-            <div key={player._id}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={isPlayerInGame(player)}
-                  onChange={() => handleToggle(player)}
-                />
-                {player.name}
-              </label>
-            </div>
-          ))}
+          {players.map((player) =>
+            typeof player._id === "string" ? (
+              <div key={player._id}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={localPlayerIds.includes(player._id)}
+                    onChange={() => togglePlayer(player._id)}
+                  />
+                  {player.name}
+                </label>
+              </div>
+            ) : null
+          )}
         </div>
-        <button
-          className={s.closeButton}
-          onClick={() => setDisplayPlayers(false)}
-        >
-          Fermer
-        </button>
+
+        <div className={s.buttonRow}>
+          <Button label={"Valider"} onClick={handleSubmit} />
+          <button onClick={() => setDisplayPlayers(false)}>Annuler</button>
+        </div>
       </div>
     </div>
   );

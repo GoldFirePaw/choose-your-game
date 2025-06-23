@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { useGames } from "../../api/games/useGames";
 import s from "./GamesList.module.css";
+import { useGamesContext } from "../../contexts/gamesContext";
 import { Card } from "../Card/Card";
 
 export const GamesList = () => {
-  const { games, loading } = useGames();
+  const { games, loading } = useGamesContext();
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
 
   return (
@@ -18,7 +18,7 @@ export const GamesList = () => {
             <Card
               content={"gameCard"}
               key={game._id}
-              game={game}
+              gameId={game._id}
               isActive={activeGameId === game._id}
               setActiveGameId={setActiveGameId}
             />

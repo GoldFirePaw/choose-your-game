@@ -1,19 +1,22 @@
 import { useGamesContext } from "../../contexts/gamesContext";
 import { GamePlayersCheckboxes } from "../GamePlayersCheckboxes/GamePlayersCheckboxes";
-import type { Game } from "../../types";
 import s from "./GameCard.module.css";
 import { Button, SecondaryButton } from "../Buttons/Button";
 
 type Props = {
-  game: Game;
+  gameId: string;
   isActive: boolean;
   setActiveGameId: (id: string | null) => void;
 };
 
-export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
-  const { deleteGame } = useGamesContext();
-  console.log("🧾 Affichage carte jeu :", game);
+export const GameCard = ({ isActive, setActiveGameId, gameId }: Props) => {
+  const { deleteGame, games } = useGamesContext();
 
+  const game = games.find((g) => g._id === gameId);
+
+  if (!game) {
+    return <p>Jeu non trouvé.</p>;
+  }
   return (
     <>
       <div>
@@ -28,13 +31,14 @@ export const GameCard = ({ game, isActive, setActiveGameId }: Props) => {
         <SecondaryButton
           label="✖️"
           onClick={() => {
-            game._id && deleteGame(game._id);
+            deleteGame(game._id);
           }}
         />
       </div>
 
       {isActive && (
         <GamePlayersCheckboxes
+          key={game._id + "-modal"}
           gameId={game._id}
           setDisplayPlayers={() => setActiveGameId(null)}
         />

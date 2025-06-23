@@ -5,11 +5,12 @@ import { Main } from "./pages/Main";
 function App() {
   return (
     <>
-      <PlayersProvider>
-        <GamesProvider>
+      {" "}
+      <GamesProvider>
+        <PlayersProvider>
           <Main />
-        </GamesProvider>
-      </PlayersProvider>
+        </PlayersProvider>
+      </GamesProvider>
     </>
   );
 }
