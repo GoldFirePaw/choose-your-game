@@ -3,7 +3,8 @@ import type { ReactNode } from "react";
 import { getGames } from "../api/games/getGames";
 import { addGame as apiAddGame } from "../api/games/addGame";
 import { deleteGame as apiDeleteGame } from "../api/games/deleteGame";
-import type { Game, NewGame } from "../types";
+import { updateGame as apiUpdateGame } from "../api/games/updateGame";
+import type { Game, NewGame, GameUpdatePayload } from "../types";
 
 type GamesContextType = {
   games: Game[];
@@ -11,6 +12,15 @@ type GamesContextType = {
   addGame: (game: NewGame) => Promise<void>;
   deleteGame: (id: string) => Promise<void>;
   refetchGames: () => Promise<void>;
+  updateGame: (
+    id: string,
+    updatedGame: {
+      name: string;
+      minimumPlayers: number;
+      maximumPlayers: number;
+      players: string[];
+    }
+  ) => Promise<void>;
 };
 
 const GamesContext = createContext<GamesContextType | undefined>(undefined);
@@ -22,6 +32,7 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
   const fetchGames = async () => {
     setLoading(true);
     const data = await getGames();
+    console.log("🎯 Données fetchées du backend :", data); // <= ICI
     setGames(data);
     setLoading(false);
   };
@@ -38,6 +49,16 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const updateGame = async (id: string, updatedGame: GameUpdatePayload) => {
+    const updated = await apiUpdateGame(id, updatedGame);
+    console.log("📦 Réponse backend après updateGame :", updated);
+
+    if (updated) {
+      console.log("📦 updateGame terminé, on refetch...");
+      fetchGames();
+    }
+  };
+
   const deleteGame = async (id: string) => {
     const success = await apiDeleteGame(id);
     if (success) {
@@ -48,7 +69,14 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
 
   return (
     <GamesContext.Provider
-      value={{ games, loading, addGame, deleteGame, refetchGames: fetchGames }}
+      value={{
+        games,
+        loading,
+        addGame,
+        deleteGame,
+        refetchGames: fetchGames,
+        updateGame,
+      }}
     >
       {children}
     </GamesContext.Provider>

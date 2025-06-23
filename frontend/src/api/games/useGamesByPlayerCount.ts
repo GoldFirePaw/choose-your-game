@@ -1,12 +1,13 @@
-import { useGames } from './useGames';
+import { useGamesContext } from "./../../contexts/gamesContext";
 
 export const useGamesByPlayerCount = (count: number) => {
-  const { games, loading } = useGames();
-  const filteredGames = count === 0
-    ? games
-    : games.filter(
-        (g) => g.minimumPlayers <= count && g.maximumPlayers >= count
-      );
+  const { games, loading } = useGamesContext();
+  const filteredGames =
+    count === 0
+      ? games
+      : games.filter(
+          (g) => g.minimumPlayers <= count && g.maximumPlayers >= count
+        );
 
   return { games: filteredGames, loading };
 };

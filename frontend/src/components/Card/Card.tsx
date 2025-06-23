@@ -7,14 +7,13 @@ import s from "./Card.module.css";
 import cx from "classnames";
 import type { Player } from "../../types";
 import { GameCard } from "../GameCard/GameCard";
-import type { Game } from "../../types";
 
 type CardProps = {
   content: ContentType;
   selected?: Player[];
   onChange?: (players: Player[]) => void;
   selectedPlayers?: Player[];
-  game?: Game;
+  gameId?: string;
   isActive?: boolean;
   setActiveGameId?: (id: string | null) => void;
   setModalContent?: (content: string) => void;
@@ -34,7 +33,7 @@ export const Card = ({
   selected,
   onChange,
   selectedPlayers,
-  game,
+  gameId,
   isActive,
   setActiveGameId,
   setModalContent,
@@ -65,10 +64,10 @@ export const Card = ({
       );
       break;
     case "gameCard":
-      cardContent = game && isActive !== undefined && setActiveGameId && (
+      cardContent = gameId && isActive !== undefined && setActiveGameId && (
         <GameCard
-          key={game._id}
-          game={game}
+          key={gameId}
+          gameId={gameId}
           isActive={isActive}
           setActiveGameId={setActiveGameId}
         />
