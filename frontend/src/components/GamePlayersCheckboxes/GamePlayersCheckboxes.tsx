@@ -77,6 +77,7 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
+              className={s.input}
             />
           </p>
           <p>
@@ -87,7 +88,7 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
               value={minPlayers}
               onChange={(e) => setMinPlayers(Number(e.target.value))}
               min={1}
-              style={{ width: "40px" }}
+              className={s.input}
             />{" "}
             à{" "}
             <input
@@ -95,7 +96,7 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
               value={maxPlayers}
               onChange={(e) => setMaxPlayers(Number(e.target.value))}
               min={minPlayers}
-              style={{ width: "40px" }}
+              className={s.input}
             />
           </p>
           <h4>Joueurs possédant le jeu :</h4>
