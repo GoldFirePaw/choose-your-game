@@ -5,6 +5,7 @@ type ButtonProps = {
   label: string;
   onClick: () => void;
   type?: "button" | "submit" | "reset";
+  disabled?: boolean;
 };
 
 export const Button = ({ label, onClick, type }: ButtonProps) => {
