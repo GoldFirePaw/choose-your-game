@@ -13,17 +13,25 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
   const { players } = usePlayerContext();
   const { games, updateGame } = useGamesContext();
   const [localPlayerIds, setLocalPlayerIds] = useState<string[]>([]);
+  const [error, setError] = useState<string | null>(null);
 
   const game = games.find((g) => g._id === gameId);
   if (!game) return null;
+
+  const [name, setName] = useState(game.name);
+  const [minPlayers, setMinPlayers] = useState(game.minimumPlayers);
+  const [maxPlayers, setMaxPlayers] = useState(game.maximumPlayers);
 
   // Remplit le state local à partir du jeu actuel
   useEffect(() => {
     const updatedGame = games.find((g) => g._id === gameId);
     if (updatedGame) {
       setLocalPlayerIds([...(updatedGame.players ?? [])]);
+      setName(updatedGame.name);
+      setMinPlayers(updatedGame.minimumPlayers);
+      setMaxPlayers(updatedGame.maximumPlayers);
     }
-  }, [gameId, games]); // <- on écoute TOUT le tableau
+  }, [gameId, games]);
 
   const togglePlayer = (playerId: string) => {
     setLocalPlayerIds((prev) =>
@@ -33,16 +41,25 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
     );
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+
   const handleSubmit = async () => {
-    // Nettoyage des doublons au cas où (par sécurité)
+    if (minPlayers > maxPlayers) {
+      setError("Le nombre minimum de joueurs ne peut pas dépasser le maximum.");
+      return;
+    }
+
+    setError(null); // Nettoie l'erreur précédente si OK
+
     const uniquePlayerIds = Array.from(new Set(localPlayerIds));
 
-    console.log("🧾 Soumission des joueurs sélectionnés :", uniquePlayerIds);
-
     await updateGame(game._id, {
-      name: game.name,
-      minimumPlayers: game.minimumPlayers,
-      maximumPlayers: game.maximumPlayers,
+      name,
+      minimumPlayers: minPlayers,
+      maximumPlayers: maxPlayers,
       players: uniquePlayerIds,
     });
 
@@ -52,28 +69,58 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
   return (
     <div className={s.popperBackdrop} onClick={() => setDisplayPlayers(false)}>
       <div className={s.popperContainer} onClick={(e) => e.stopPropagation()}>
-        <h4>Joueurs possédant le jeu :</h4>
-        <div>
-          {players.map((player) =>
-            typeof player._id === "string" ? (
-              <div key={player._id}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={localPlayerIds.includes(player._id)}
-                    onChange={() => togglePlayer(player._id)}
-                  />
-                  {player.name}
-                </label>
-              </div>
-            ) : null
-          )}
-        </div>
+        <form onSubmit={handleFormSubmit}>
+          <h4>Modifier infos jeu</h4>
+          <p>
+            <strong>Nom du jeu :</strong>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </p>
+          <p>
+            <strong>Nombre de joueurs :</strong>
+            {error && <p style={{ color: "red" }}>{error}</p>}
+            <input
+              type="number"
+              value={minPlayers}
+              onChange={(e) => setMinPlayers(Number(e.target.value))}
+              min={1}
+              style={{ width: "40px" }}
+            />{" "}
+            à{" "}
+            <input
+              type="number"
+              value={maxPlayers}
+              onChange={(e) => setMaxPlayers(Number(e.target.value))}
+              min={minPlayers}
+              style={{ width: "40px" }}
+            />
+          </p>
+          <h4>Joueurs possédant le jeu :</h4>
+          <div>
+            {players.map((player) =>
+              typeof player._id === "string" ? (
+                <div key={player._id}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={localPlayerIds.includes(player._id)}
+                      onChange={() => togglePlayer(player._id)}
+                    />
+                    {player.name}
+                  </label>
+                </div>
+              ) : null
+            )}
+          </div>
 
-        <div className={s.buttonRow}>
-          <Button label={"Valider"} onClick={handleSubmit} />
-          <button onClick={() => setDisplayPlayers(false)}>Annuler</button>
-        </div>
+          <div className={s.buttonRow}>
+            <Button label={"Valider"} onClick={handleSubmit} type="submit" />
+            <Button onClick={() => setDisplayPlayers(false)} label="Annuler" />
+          </div>
+        </form>
       </div>
     </div>
   );
