@@ -1,0 +1,37 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: var(--color-background-main);
+  color: var(--color-text-main);
+  padding: 2rem;
+  border-radius: var(--radius-lg);
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: var(--box-shadow-default);
+}
+
+.modal h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+}
+
+.content p {
+  margin-bottom: 1rem;
+  line-height: 1.4;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
