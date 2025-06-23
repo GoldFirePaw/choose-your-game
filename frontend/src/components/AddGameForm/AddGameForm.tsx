@@ -47,8 +47,7 @@ export const AddGameForm = () => {
         required
         className={s.input}
       />
-      <Button onClick={() => handleSubmit} type="submit" label={"Ajouter"} />
-      Ajouter
+      <Button type="submit" label={"Ajouter"} />
     </form>
   );
 };

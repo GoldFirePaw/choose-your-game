@@ -1,16 +1,78 @@
 .playersContainer {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  justify-content: center;
 }
 
 .playerContainer {
+  position: relative;
   display: flex;
-  flex-direction: row;
   align-items: center;
-  padding: 8px;
-  border-radius: 4px;
-  width: 150px;
-  background-color: var(--color-background-main);
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  font-size: 1rem;
+  color: var(--color-text-main);
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  box-shadow: var(--box-shadow-default);
+  min-width: 140px;
+  max-width: 100%;
+  flex: 1 1 calc(33.333% - 1rem);
+  white-space: nowrap;
+  touch-action: manipulation;
+}
+
+.playerContainer:hover {
+  background-color: var(--color-background-soft);
+  transform: scale(1.02);
+}
+
+.playerContainer::after {
+  content: "✏️";
+  margin-left: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.85;
+  pointer-events: none;
+}
+
+.playerContainer input[type="checkbox"] {
+  transform: scale(1.1);
+  cursor: pointer;
+  accent-color: var(--color-secondary);
+}
+
+.playerContainer input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+.instructions {
+  font-size: 0.875rem;
+  font-style: italic;
+  color: var(--color-muted);
+  margin-top: 0.25rem;
+  text-align: center;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive tablette */
+@media (max-width: 900px) {
+  .playerContainer {
+    flex: 1 1 calc(50% - 1rem);
+  }
+}
+
+/* Responsive mobile */
+@media (max-width: 600px) {
+  .playerContainer {
+    flex: 1 1 100%;
+  }
 }

@@ -33,6 +33,10 @@ export const ActivePlayers = ({
   return (
     <div>
       <h3>Joueurs présents</h3>
+      <p className={s.instructions}>
+        Cliquez sur un joueur pour voir ses détails. Cochez pour l'ajouter à la
+        partie.
+      </p>
       <div className={s.playersContainer}>
         {players.map((player) => (
           <div

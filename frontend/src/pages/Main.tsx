@@ -12,7 +12,7 @@ export const Main = () => {
   const { selectedPlayerId } = usePlayerContext();
 
   return (
-    <>
+    <div className={s.wrapper}>
       <div className={s.filtersContainer}>
         <Card
           content={"activePlayers"}
@@ -34,6 +34,6 @@ export const Main = () => {
           selectedPlayerId={selectedPlayerId}
         />
       )}
-    </>
+    </div>
   );
 };
