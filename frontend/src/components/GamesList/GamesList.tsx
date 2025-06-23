@@ -14,15 +14,19 @@ export const GamesList = () => {
         <p>Chargement...</p>
       ) : (
         <div className={s.gamesListContainer}>
-          {games.map((game) => (
-            <Card
-              content={"gameCard"}
-              key={game._id}
-              gameId={game._id}
-              isActive={activeGameId === game._id}
-              setActiveGameId={setActiveGameId}
-            />
-          ))}
+          {[...games]
+            .sort((a, b) =>
+              a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+            )
+            .map((game) => (
+              <Card
+                content={"gameCard"}
+                key={game._id}
+                gameId={game._id}
+                isActive={activeGameId === game._id}
+                setActiveGameId={setActiveGameId}
+              />
+            ))}
         </div>
       )}
     </div>
