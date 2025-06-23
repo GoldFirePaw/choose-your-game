@@ -80,7 +80,7 @@ export const Card = ({
 
   return (
     <div className={cx(s.cardContainer, content && s[content])}>
-      <div>{cardContent}</div>
+      {cardContent}
     </div>
   );
 };
