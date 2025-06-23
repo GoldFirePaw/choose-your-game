@@ -205,6 +205,30 @@ app.delete("/players/:id", async (req, res) => {
   }
 });
 
+// PUT /players/:playerId/add-to-games
+app.put("/players/:playerId/add-to-games", async (req, res) => {
+  const { playerId } = req.params;
+  const { gameIds } = req.body;
+
+  try {
+    const playerObjectId = new ObjectId(playerId);
+    const gameObjectIds = gameIds.map((id) => new ObjectId(id));
+
+    const result = await db.collection("games").updateMany(
+      { _id: { $in: gameObjectIds } },
+      { $addToSet: { players: playerObjectId } }
+    );
+
+    res.json({
+      modifiedCount: result.modifiedCount,
+      message: `Le joueur a été ajouté à ${result.modifiedCount} jeu(x)`,
+    });
+  } catch (err) {
+    console.error("Erreur lors de l'ajout du joueur :", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
+});
+
 /* =======================
    LANCEMENT DU SERVEUR
 ======================= */
