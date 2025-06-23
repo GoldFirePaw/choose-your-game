@@ -7,4 +7,5 @@
   justify-items: center;
   align-items: stretch;
   padding: 1rem;
+  overflow-x: hidden;
 }
