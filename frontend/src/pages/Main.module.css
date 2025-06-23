@@ -1,11 +1,35 @@
-.filtersContainer {
+.wrapper {
+  padding: 1rem;
+  max-width: 1000px;
+  margin: 0 auto;
   display: flex;
-  flex-direction: row;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-.addFormsContainer {
+/* Conteneur des filtres */
+.filtersContainer {
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
   gap: 1rem;
+  justify-content: center;
+}
+
+/* Conteneur des formulaires d'ajout */
+.addFormsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Responsive : empile les éléments sur petits écrans */
+@media (max-width: 768px) {
+  .filtersContainer,
+  .addFormsContainer {
+    flex-direction: column;
+    align-items: stretch;
+  }
 }

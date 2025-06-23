@@ -1,5 +1,10 @@
 .gamesListContainer {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  justify-items: center;
+  align-items: stretch;
+  padding: 1rem;
 }

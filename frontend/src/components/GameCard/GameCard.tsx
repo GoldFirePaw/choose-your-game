@@ -19,13 +19,13 @@ export const GameCard = ({ isActive, setActiveGameId, gameId }: Props) => {
   }
   return (
     <>
-      <div>
+      <div className={s.gameCard}>
         <h3 className={s.title}>{game.name}</h3>
         <p>
           Joueurs : {game.minimumPlayers}–{game.maximumPlayers}
         </p>
         <Button
-          label={`${isActive ? "Hide" : "Show"} players`}
+          label={"Editer"}
           onClick={() => setActiveGameId(isActive ? null : game._id)}
         />
         <SecondaryButton

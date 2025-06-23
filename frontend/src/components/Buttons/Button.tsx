@@ -3,7 +3,7 @@ import cx from "classnames";
 
 type ButtonProps = {
   label: string;
-  onClick: () => void;
+  onClick?: () => void;
   type?: "button" | "submit" | "reset";
   disabled?: boolean;
 };

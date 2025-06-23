@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { usePlayerContext } from "../../contexts/playersContext";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { SecondaryButton, Button } from "../Buttons/Button";
+import s from "./PlayerDetails.module.css";
 
 type PlayerDetailsProps = {
   playerId: string;
@@ -9,14 +10,13 @@ type PlayerDetailsProps = {
 };
 
 export const PlayerDetails = ({ playerId, onClose }: PlayerDetailsProps) => {
-  const { deletePlayer } = usePlayerContext();
+  const { deletePlayer, players } = usePlayerContext();
   const { games, updateGame } = useGamesContext();
 
   const [selectedGames, setSelectedGames] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  // Pré-cocher les jeux dans lesquels le joueur est déjà présent
   useEffect(() => {
     const preSelected = games
       .filter((game) => game.players?.includes(playerId))
@@ -58,24 +58,28 @@ export const PlayerDetails = ({ playerId, onClose }: PlayerDetailsProps) => {
   };
 
   return (
-    <div className="playerDetails">
-      <h2>Détails du joueur</h2>
-
-      <div>
-        <h4>Associer ce joueur à des jeux :</h4>
-        {games.map((game) => (
-          <label key={game._id}>
-            <input
-              type="checkbox"
-              checked={selectedGames.includes(game._id)}
-              onChange={() => toggleGame(game._id)}
-            />
-            {game.name}
-          </label>
-        ))}
+    <div className={s.playerDetails}>
+      <h2 className={s.title}>Détails du joueur</h2>
+      <div className={s.playerName}>
+        {players.find((p) => p._id === playerId)?.name || "Joueur inconnu"}
       </div>
-
-      <div style={{ marginTop: "1rem" }}>
+      <div>
+        <h4 className={s.subtitle}>Associer ce joueur à des jeux :</h4>
+        <div className={s.gamesList}>
+          {games.map((game) => (
+            <label key={game._id} className={s.gameLabel}>
+              <input
+                type="checkbox"
+                checked={selectedGames.includes(game._id)}
+                onChange={() => toggleGame(game._id)}
+                className={s.checkbox}
+              />
+              {game.name}
+            </label>
+          ))}
+        </div>
+      </div>
+      <div className={s.actions}>
         <Button
           label={
             loading
@@ -87,17 +91,14 @@ export const PlayerDetails = ({ playerId, onClose }: PlayerDetailsProps) => {
           onClick={handleAddToGames}
           disabled={loading}
         />
+        <SecondaryButton
+          onClick={() => {
+            deletePlayer(playerId);
+            onClose();
+          }}
+          label={"Supprimer le joueur"}
+        />
       </div>
-
-      <hr />
-
-      <SecondaryButton
-        onClick={() => {
-          deletePlayer(playerId);
-          onClose();
-        }}
-        label={"Supprimer le joueur"}
-      />
     </div>
   );
 };
