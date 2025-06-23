@@ -16,7 +16,5 @@
 .secondaryButton {
     background-color: #c0392b;
     border-radius: 20px;
-    width: fit-content;
-    height: fit-content;
-    padding: 4px 12px;
+    padding: 10px 20px;
 }

@@ -4,6 +4,7 @@ import type { Player } from "../types";
 import s from "./Main.module.css";
 import { Modal } from "../components/Modals/Modal";
 import { usePlayerContext } from "../contexts/playersContext";
+import { FloatingMenu } from "../components/FloatingMenu/FloatingMenu";
 
 export const Main = () => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
@@ -13,6 +14,7 @@ export const Main = () => {
 
   return (
     <div className={s.wrapper}>
+      <FloatingMenu />
       <div className={s.filtersContainer}>
         <Card
           content={"activePlayers"}

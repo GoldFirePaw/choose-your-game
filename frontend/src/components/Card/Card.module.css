@@ -8,16 +8,14 @@
   background-color: var(--color-surface);
   color: var(--color-text-main);
   flex: 1;
-  min-width: 0; /* évite les débordements dans les flex-wrap */
+  min-width: 0;
 }
 
-/* Spécifiques à chaque type */
-.activePlayers {
-  background-color: var(--color-background-soft);
-  color: var(--color-text-main);
-}
-
+/* Listes de jeux */
 .gamesList {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* ⚡️ responsive grille */
+  gap: 1rem;
   background-color: var(--color-surface);
   color: var(--color-text-main);
 }
@@ -27,6 +25,7 @@
   color: var(--color-primary-text);
 }
 
+/* Ajout d'un jeu / joueur */
 .addAGame,
 .addAPlayer {
   display: flex;
@@ -40,8 +39,7 @@
 @media (max-width: 768px) {
   .cardContainer {
     margin: 0.5rem;
-    padding: 0.75rem;
-    border-radius: var(--radius-lg);
+    padding: 10px;
   }
 
   .addAGame,

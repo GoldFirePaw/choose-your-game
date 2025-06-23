@@ -9,7 +9,7 @@ export const GamesList = () => {
 
   return (
     <div>
-      <h1>Liste des jeux</h1>
+      <h1 id="games-list">Liste des jeux</h1>
       {loading ? (
         <p>Chargement...</p>
       ) : (

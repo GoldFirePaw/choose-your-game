@@ -18,7 +18,9 @@ export const AddPlayerForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className={s.form}>
-      <h2 className={s.title}>Ajouter un joueur</h2>
+      <h2 id="add-player" className={s.title}>
+        Ajouter un joueur
+      </h2>
       <input
         type="text"
         placeholder="Nom du joueur"
