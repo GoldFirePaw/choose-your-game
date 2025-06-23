@@ -5,6 +5,7 @@ import s from "./Main.module.css";
 import { Modal } from "../components/Modals/Modal";
 import { usePlayerContext } from "../contexts/playersContext";
 import { FloatingMenu } from "../components/FloatingMenu/FloatingMenu";
+import { HelpModal } from "../components/Modals/HelpModal/HelpModal";
 
 export const Main = () => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
@@ -14,6 +15,7 @@ export const Main = () => {
 
   return (
     <div className={s.wrapper}>
+      <HelpModal />
       <FloatingMenu />
       <div className={s.filtersContainer}>
         <Card
