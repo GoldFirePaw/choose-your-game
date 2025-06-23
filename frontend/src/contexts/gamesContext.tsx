@@ -41,6 +41,16 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
     fetchGames();
   }, []);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (document.visibilityState === "visible") {
+        fetchGames(); // ou loadGames()
+      }
+    }, 60000); // 60000 ms = 1 minute
+
+    return () => clearInterval(interval);
+  }, []);
+
   const addGame = async (game: NewGame) => {
     const newGame = await apiAddGame(game);
     if (newGame) {

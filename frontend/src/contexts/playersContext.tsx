@@ -21,11 +21,24 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(true);
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
+  const fetchPlayers = async () => {
+    const data = await getPlayers();
+    setPlayers(data);
+    setLoading(false);
+  };
+
   useEffect(() => {
-    getPlayers().then((data) => {
-      setPlayers(data);
-      setLoading(false);
-    });
+    fetchPlayers();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (document.visibilityState === "visible") {
+        fetchPlayers();
+      }
+    }, 60000); // toutes les 60 secondes
+
+    return () => clearInterval(interval);
   }, []);
 
   const addPlayer = async (name: string) => {
