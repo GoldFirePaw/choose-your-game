@@ -25,7 +25,9 @@ export const AddGameForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className={s.form}>
-      <h2 className={s.title}>Ajouter un jeu</h2>
+      <h2 id="add-game" className={s.title}>
+        Ajouter un jeu
+      </h2>
       <input
         value={name}
         onChange={(e) => setName(e.target.value)}
