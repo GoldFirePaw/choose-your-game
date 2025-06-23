@@ -66,17 +66,21 @@ export const PlayerDetails = ({ playerId, onClose }: PlayerDetailsProps) => {
       <div>
         <h4 className={s.subtitle}>Associer ce joueur à des jeux :</h4>
         <div className={s.gamesList}>
-          {games.map((game) => (
-            <label key={game._id} className={s.gameLabel}>
-              <input
-                type="checkbox"
-                checked={selectedGames.includes(game._id)}
-                onChange={() => toggleGame(game._id)}
-                className={s.checkbox}
-              />
-              {game.name}
-            </label>
-          ))}
+          {[...games]
+            .sort((a, b) =>
+              a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+            )
+            .map((game) => (
+              <label key={game._id} className={s.gameLabel}>
+                <input
+                  type="checkbox"
+                  checked={selectedGames.includes(game._id)}
+                  onChange={() => toggleGame(game._id)}
+                  className={s.checkbox}
+                />
+                {game.name}
+              </label>
+            ))}
         </div>
       </div>
       <div className={s.actions}>
