@@ -20,20 +20,22 @@ export const GameCard = ({ isActive, setActiveGameId, gameId }: Props) => {
   return (
     <>
       <div className={s.gameCard}>
-        <h3 className={s.title}>{game.name}</h3>
-        <p>
+        <span className={s.title}>{game.name}</span>
+        <p className={s.playersInfo}>
           Joueurs : {game.minimumPlayers}–{game.maximumPlayers}
         </p>
-        <Button
-          label={"Editer"}
-          onClick={() => setActiveGameId(isActive ? null : game._id)}
-        />
-        <SecondaryButton
-          label="✖️"
-          onClick={() => {
-            deleteGame(game._id);
-          }}
-        />
+        <div className={s.buttonsRow}>
+          <Button
+            label={"Editer"}
+            onClick={() => setActiveGameId(isActive ? null : game._id)}
+          />
+          <SecondaryButton
+            label="✖️"
+            onClick={() => {
+              deleteGame(game._id);
+            }}
+          />
+        </div>
       </div>
 
       {isActive && (

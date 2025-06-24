@@ -1,82 +1,78 @@
 .gameCard {
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  padding: 0.5rem;
+  width: 100%;
+  background-color: var(--color-surface);
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
   align-items: center;
-  border-radius: 20px;
-  gap: 0.75rem;
-  padding: 1rem;
-  width: 100%;
+  text-align: center;
+  gap: 0.4rem;
+  min-width: 0;
   box-sizing: border-box;
-  transition: all 0.3s ease;
+  font-size: 0.85rem;
+  box-shadow: var(--box-shadow-default);
 }
 
 .gameInfo {
-  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.2rem;
 }
 
 .title {
-  font-size: 1.2rem;
-  font-weight: bold;
+  font-size: 1rem;
+  font-weight: 600;
   margin: 0;
   line-height: 1.2;
 }
 
 .playersInfo {
-  font-size: 1rem;
+  font-size: 0.85rem;
   margin: 0;
   line-height: 1.2;
 }
 
-.gameActions {
+.buttonsRow {
   display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  margin-top: auto;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 0.3rem;
+}
+
+.buttonsRow button {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.6rem;
+  height: auto;
+  border-radius: 5px;
+  white-space: nowrap;
 }
 
 /* === Responsive mobile === */
 @media screen and (max-width: 500px) {
   .gameCard {
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: stretch;
-    width: 100%; 
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    height: auto;
-  }
-  .gameInfo {
-    flex: 1;
-    text-align: center;
-    gap: 0;
+    padding: 0.6rem 0.8rem;
+    font-size: 0.8rem;
   }
 
   .title {
-    font-size: 1rem;
-    margin-bottom: 0;
-    padding-bottom: 0;
+    font-size: 0.9rem;
   }
 
   .playersInfo {
-    font-size: 0.85rem;
+    font-size: 0.75rem;
   }
 
-  .gameActions {
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+  .buttonsRow {
+    gap: 0.3rem;
+    margin-top: 0.2rem;
   }
 
-  .gameActions button {
-    width: 2.2rem;
-    height: 2.2rem;
-    font-size: 1rem;
-    padding: 0;
-    flex: 1;
-    max-width: 48%;
+  .buttonsRow button {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
   }
 }

@@ -26,11 +26,11 @@ export const Main = () => {
         />
         <Card content="filteredGameList" selectedPlayers={selectedPlayers} />
       </div>
-      <Card content="gamesList" />
       <div className={s.addFormsContainer}>
         <Card content="addAGame" />
         <Card content="addAPlayer" />
       </div>
+      <Card content="gamesList" />
       {modalContent !== "" && selectedPlayerId && (
         <Modal
           modalContent={modalContent}
