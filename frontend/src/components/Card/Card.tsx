@@ -6,7 +6,6 @@ import { GamesList } from "../GamesList/GamesList";
 import s from "./Card.module.css";
 import cx from "classnames";
 import type { Player } from "../../types";
-import { GameCard } from "../GameCard/GameCard";
 
 type CardProps = {
   content: ContentType;
@@ -25,17 +24,13 @@ type ContentType =
   | "addAGame"
   | "addAPlayer"
   | "filteredGameList"
-  | "playersList"
-  | "gameCard";
+  | "playersList";
 
 export const Card = ({
   content,
   selected,
   onChange,
   selectedPlayers,
-  gameId,
-  isActive,
-  setActiveGameId,
   setModalContent,
 }: CardProps) => {
   let cardContent;
@@ -61,16 +56,6 @@ export const Card = ({
     case "filteredGameList":
       cardContent = selectedPlayers && (
         <FilteredGameList selectedPlayers={selectedPlayers} />
-      );
-      break;
-    case "gameCard":
-      cardContent = gameId && isActive !== undefined && setActiveGameId && (
-        <GameCard
-          key={gameId}
-          gameId={gameId}
-          isActive={isActive}
-          setActiveGameId={setActiveGameId}
-        />
       );
       break;
     default:

@@ -15,8 +15,8 @@
 
 /* Listes de jeux */
 .gamesList {
-  display: grid; /* au lieu de flex */
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 2rem;
   background-color: var(--color-surface);
   color: var(--color-text-main);

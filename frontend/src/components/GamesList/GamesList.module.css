@@ -1,6 +1,6 @@
 .gamesListContainer {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 1rem;
   width: 100%;
   box-sizing: border-box;
@@ -8,4 +8,17 @@
   align-items: stretch;
   padding: 1rem;
   overflow-x: hidden;
+  max-height: 500px;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background-color: var(--color-surface);
+  color: var(--color-text-main);
+  box-sizing: border-box;
 }
