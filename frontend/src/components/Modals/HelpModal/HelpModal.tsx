@@ -1,14 +1,17 @@
 import { useState } from "react";
 import s from "./HelpModal.module.css";
 import { Button } from "../../Buttons/Button"; // adapte le chemin si besoin
+import { DataStatus } from "../../DataStatus/DataStatus";
 
 export const HelpModal = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)} label="❓ Aide" />
-
+      <div className={s.buttonsContainer}>
+        <Button onClick={() => setIsOpen(true)} label="❓ Aide" />
+        <DataStatus />
+      </div>
       {isOpen && (
         <div className={s.backdrop} onClick={() => setIsOpen(false)}>
           <div className={s.modal} onClick={(e) => e.stopPropagation()}>
