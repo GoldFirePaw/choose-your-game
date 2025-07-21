@@ -5,6 +5,13 @@
     border-radius: 32px;
     cursor: pointer;
     text-align: center;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 .primaryButton {
@@ -13,8 +20,16 @@
     font-size: 16px;
 }
 
+.primaryButton:hover:not(:disabled) {
+    background-color: #2517a1;
+}
+
 .secondaryButton {
     background-color: #c0392b;
     border-radius: 20px;
     padding: 10px 20px;
+}
+
+.secondaryButton:hover:not(:disabled) {
+    background-color: #a93226;
 }

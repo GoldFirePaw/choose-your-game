@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { usePlayerContext } from "../../contexts/playersContext";
+import { useSubmitWithDebounce } from "../../hooks/useDebounce";
 import s from "./gamePlayersCheckboxes.module.css";
 import { Button } from "../Buttons/Button";
 
@@ -41,12 +42,7 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
     );
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleSubmit();
-  };
-
-  const handleSubmit = async () => {
+  const handleUpdateGame = async () => {
     if (minPlayers > maxPlayers) {
       setError("Le nombre minimum de joueurs ne peut pas dépasser le maximum.");
       return;
@@ -64,6 +60,20 @@ export const GamePlayersCheckboxes = ({ gameId, setDisplayPlayers }: Props) => {
     });
 
     setDisplayPlayers(false);
+  };
+
+  const { submit: debouncedSubmit, isLoading } = useSubmitWithDebounce(
+    handleUpdateGame,
+    500
+  );
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    debouncedSubmit();
+  };
+
+  const handleSubmit = async () => {
+    await debouncedSubmit();
   };
 
   return (
