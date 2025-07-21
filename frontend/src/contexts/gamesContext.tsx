@@ -10,7 +10,10 @@ type GamesContextType = {
   games: Game[];
   loading: boolean;
   addGame: (game: NewGame) => Promise<void>;
-  deleteGame: (id: string) => Promise<void>;
+  deleteGame: (
+    id: string,
+    password: string
+  ) => Promise<{ success: boolean; error?: string }>;
   refetchGames: () => Promise<void>;
   forceRefresh: () => Promise<void>;
   updateGame: (
@@ -120,12 +123,16 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const deleteGame = async (id: string) => {
-    const success = await apiDeleteGame(id);
-    if (success) {
+  const deleteGame = async (
+    id: string,
+    password: string
+  ): Promise<{ success: boolean; error?: string }> => {
+    const result = await apiDeleteGame(id, password);
+    if (result.success) {
       console.log("✅ Jeu supprimé :", id);
       setGames((prev) => prev.filter((g) => g._id !== id));
     }
+    return result;
   };
 
   return (

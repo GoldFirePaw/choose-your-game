@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { usePlayerContext } from "../../contexts/playersContext";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { SecondaryButton, Button } from "../Buttons/Button";
+import { usePasswordProtectedDelete } from "../../hooks/usePasswordProtectedDelete";
+import { PasswordDialog } from "../PasswordDialog/PasswordDialog";
 import s from "./PlayerDetails.module.css";
 
 type PlayerDetailsProps = {
@@ -16,6 +18,16 @@ export const PlayerDetails = ({ playerId, onClose }: PlayerDetailsProps) => {
   const [selectedGames, setSelectedGames] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+
+  // Password protection for delete operations
+  const {
+    showPasswordDialog,
+    loading: deleting,
+    error: deleteError,
+    openPasswordDialog,
+    closePasswordDialog,
+    handlePasswordConfirm,
+  } = usePasswordProtectedDelete();
 
   useEffect(() => {
     const preSelected = games
@@ -57,6 +69,14 @@ export const PlayerDetails = ({ playerId, onClose }: PlayerDetailsProps) => {
     setTimeout(() => setSuccess(false), 2000);
   };
 
+  const handleDeletePlayer = async (password: string) => {
+    const result = await deletePlayer(playerId, password);
+    if (result.success) {
+      onClose();
+    }
+    return result;
+  };
+
   return (
     <div className={s.playerDetails}>
       <h2 className={s.title}>Détails du joueur</h2>
@@ -96,13 +116,28 @@ export const PlayerDetails = ({ playerId, onClose }: PlayerDetailsProps) => {
           disabled={loading}
         />
         <SecondaryButton
-          onClick={() => {
-            deletePlayer(playerId);
-            onClose();
-          }}
-          label={"Supprimer le joueur"}
+          onClick={openPasswordDialog}
+          label={deleting ? "Suppression..." : "Supprimer le joueur"}
+          disabled={deleting}
         />
       </div>
+
+      {deleteError && <div className={s.error}>{deleteError}</div>}
+
+      {showPasswordDialog && (
+        <PasswordDialog
+          isOpen={showPasswordDialog}
+          onCancel={closePasswordDialog}
+          onConfirm={(password) =>
+            handlePasswordConfirm(password, handleDeletePlayer)
+          }
+          loading={deleting}
+          title="Supprimer le joueur"
+          message={`Êtes-vous sûr de vouloir supprimer le joueur "${
+            players.find((p) => p._id === playerId)?.name
+          }" ?`}
+        />
+      )}
     </div>
   );
 };

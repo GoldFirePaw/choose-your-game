@@ -1,18 +1,30 @@
-export const deleteGame = async (id: string): Promise<boolean> => {
+export const deleteGame = async (
+  id: string,
+  adminPassword: string
+): Promise<{ success: boolean; error?: string }> => {
   const API = import.meta.env.VITE_API_BASE_URL;
-  console.log("🚨 Suppression API :", `${API}/games/${id}`);
+  console.log("🚨 Suppression API avec mot de passe :", `${API}/games/${id}`);
+
   try {
     const response = await fetch(`${API}/games/${id}`, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ adminPassword }),
     });
 
     if (!response.ok) {
-      throw new Error("Failed to delete game");
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Failed to delete game");
     }
 
-    return true;
+    return { success: true };
   } catch (error) {
     console.error("❌ Échec suppression API :", error);
-    return false;
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
 };
