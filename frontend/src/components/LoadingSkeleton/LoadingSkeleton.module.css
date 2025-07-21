@@ -1,0 +1,68 @@
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.skeletonCard {
+  background: var(--card-background);
+  border-radius: 8px;
+  padding: 20px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.skeletonTitle {
+  height: 24px;
+  background: var(--skeleton-color, #e2e8f0);
+  border-radius: 4px;
+  margin-bottom: 16px;
+  width: 70%;
+}
+
+.skeletonContent {
+  margin-bottom: 20px;
+}
+
+.skeletonLine {
+  height: 16px;
+  background: var(--skeleton-color, #e2e8f0);
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.skeletonLineShort {
+  height: 16px;
+  background: var(--skeleton-color, #e2e8f0);
+  border-radius: 4px;
+  width: 60%;
+}
+
+.skeletonFooter {
+  display: flex;
+  gap: 12px;
+}
+
+.skeletonButton {
+  height: 32px;
+  background: var(--skeleton-color, #e2e8f0);
+  border-radius: 6px;
+  width: 80px;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+:root {
+  --skeleton-color: #e2e8f0;
+}
+
+[data-theme="dark"] {
+  --skeleton-color: #374151;
+}

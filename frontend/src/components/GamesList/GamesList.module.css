@@ -22,3 +22,10 @@
   color: var(--color-text-main);
   box-sizing: border-box;
 }
+
+.noGames {
+  text-align: center;
+  padding: 2rem;
+  color: var(--color-text-secondary);
+  font-style: italic;
+}

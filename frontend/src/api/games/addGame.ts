@@ -1,4 +1,5 @@
 import type { Game, NewGame } from "../../types";
+import { clearGamesCache } from "./getGames";
 
 export const addGame = async (game: NewGame): Promise<Game | null> => {
   const API = import.meta.env.VITE_API_BASE_URL;
@@ -20,6 +21,10 @@ export const addGame = async (game: NewGame): Promise<Game | null> => {
 
     const newGame = await response.json();
     console.log("📬 Réponse reçue de l'API :", newGame);
+
+    // Clear cache so next fetch gets fresh data
+    clearGamesCache();
+
     return newGame;
   } catch (error) {
     console.error("Error adding game:", error);
