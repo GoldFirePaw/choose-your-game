@@ -12,6 +12,7 @@ type GamesContextType = {
   addGame: (game: NewGame) => Promise<void>;
   deleteGame: (id: string) => Promise<void>;
   refetchGames: () => Promise<void>;
+  forceRefresh: () => Promise<void>;
   updateGame: (
     id: string,
     updatedGame: {
@@ -29,28 +30,62 @@ const GamesContext = createContext<GamesContextType | undefined>(undefined);
 export const GamesProvider = ({ children }: { children: ReactNode }) => {
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
+  const [lastFetch, setLastFetch] = useState<number>(0);
 
-  const fetchGames = async () => {
+  const fetchGames = async (force = false) => {
+    // Only fetch if forced or if it's been more than 5 minutes since last fetch
+    const now = Date.now();
+    const timeSinceLastFetch = now - lastFetch;
+    const FIVE_MINUTES = 5 * 60 * 1000;
+
+    if (!force && timeSinceLastFetch < FIVE_MINUTES && games.length > 0) {
+      console.log("🚫 Skipping fetch - too recent");
+      return;
+    }
+
     setLoading(true);
     const data = await getGames();
-    console.log("🎯 Données fetchées du backend :", data); // <= ICI
+    console.log("🎯 Données fetchées du backend :", data);
     setGames(data);
+    setLastFetch(now);
     setLoading(false);
   };
 
   useEffect(() => {
-    fetchGames();
+    fetchGames(true); // Force initial fetch
   }, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
+      // Only fetch if page is visible AND it's been more than 5 minutes
       if (document.visibilityState === "visible") {
-        fetchGames(); // ou loadGames()
+        fetchGames(false); // Non-forced fetch (will check timing)
       }
-    }, 60000); // 60000 ms = 1 minute
+    }, 5 * 60 * 1000); // Check every 5 minutes instead of 1 minute
 
     return () => clearInterval(interval);
-  }, []);
+  }, [lastFetch]);
+
+  // Handle page visibility changes more intelligently
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        // Only fetch if page was hidden for more than 10 minutes
+        const now = Date.now();
+        const timeSinceLastFetch = now - lastFetch;
+        const TEN_MINUTES = 10 * 60 * 1000;
+
+        if (timeSinceLastFetch > TEN_MINUTES) {
+          console.log("📱 Page visible after long time - refreshing data");
+          fetchGames(true);
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () =>
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+  }, [lastFetch]);
 
   const addGame = async (game: NewGame) => {
     const newGame = await apiAddGame(game);
@@ -87,7 +122,8 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
         loading,
         addGame,
         deleteGame,
-        refetchGames: fetchGames,
+        refetchGames: () => fetchGames(false),
+        forceRefresh: () => fetchGames(true),
         updateGame,
       }}
     >
