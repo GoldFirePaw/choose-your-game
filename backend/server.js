@@ -29,8 +29,15 @@ let db; // Connexion unique réutilisable
     console.log("📈 Index MongoDB créés pour optimiser les performances");
   } catch (err) {
     console.error("❌ Erreur de connexion MongoDB :", err);
+    console.log("⚠️  Serveur démarré sans base de données - certaines fonctions ne marcheront pas");
   }
 })();
+
+// Start server regardless of database connection status
+app.listen(PORT, () => {
+  console.log(`🚀 Backend running on http://localhost:${PORT}`);
+  console.log(`🔑 Admin password configured: ${ADMIN_PASSWORD ? 'Yes' : 'No'}`);
+});
 
 app.use(compression()); // Enable gzip compression
 app.use(cors());
@@ -195,6 +202,12 @@ app.delete("/games/:id", validateAdminPassword, async (req, res) => {
   try {
     console.log("🗑️ Deleting game with ID:", req.params.id);
     
+    // Check if database is connected
+    if (!db) {
+      console.error("❌ Database not connected");
+      return res.status(500).json({ error: "Database connection not ready" });
+    }
+    
     // Validate ObjectId format
     if (!req.params.id || req.params.id.length !== 24 || !/^[0-9a-fA-F]+$/.test(req.params.id)) {
       return res.status(400).json({ error: "Invalid game ID format" });
@@ -288,6 +301,13 @@ app.post("/players", async (req, res) => {
 app.delete("/players/:id", validateAdminPassword, async (req, res) => {
   try {
     console.log("🗑️ Deleting player with ID:", req.params.id);
+    
+    // Check if database is connected
+    if (!db) {
+      console.error("❌ Database not connected");
+      return res.status(500).json({ error: "Database connection not ready" });
+    }
+    
     const playerId = new ObjectId(req.params.id);
 
     const result = await db.collection("players").deleteOne({ _id: playerId });
@@ -332,6 +352,4 @@ app.put("/players/:playerId/add-to-games", async (req, res) => {
    LANCEMENT DU SERVEUR
 ======================= */
 
-app.listen(PORT, () => {
-  console.log(`🚀 Backend running on http://localhost:${PORT}`);
-});
+// Server startup is handled above after database connection attempt
