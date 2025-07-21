@@ -4,6 +4,7 @@ export type Game = {
   minimumPlayers: number;
   maximumPlayers: number;
   players?: string[];
+  isNavGame?: boolean;
 };
 
 export type Player = {
@@ -16,6 +17,7 @@ export type NewGame = {
   minimumPlayers: number;
   maximumPlayers: number;
   players: Player[];
+  isNavGame?: boolean;
 };
 
 export type GameUpdatePayload = {
@@ -23,4 +25,5 @@ export type GameUpdatePayload = {
   minimumPlayers: number;
   maximumPlayers: number;
   players: string[];
+  isNavGame?: boolean;
 };

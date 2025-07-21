@@ -20,7 +20,10 @@ export const GameCard = ({ isActive, setActiveGameId, gameId }: Props) => {
   return (
     <>
       <div className={s.gameCard}>
-        <span className={s.title}>{game.name}</span>
+        <div className={s.titleContainer}>
+          <span className={s.title}>{game.name}</span>
+          {game.isNavGame && <span className={s.navBadge}>🧭</span>}
+        </div>
         <p className={s.playersInfo}>
           Joueurs : {game.minimumPlayers}–{game.maximumPlayers}
         </p>

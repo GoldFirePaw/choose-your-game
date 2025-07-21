@@ -48,3 +48,77 @@
   box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.2);
   outline: none;
 }
+
+/* Nav game checkbox styles */
+.navGameContainer {
+  margin: 1rem 0;
+}
+
+.navGameLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  transition: background-color 0.2s ease;
+}
+
+.navGameLabel:hover {
+  background-color: var(--color-background-soft);
+}
+
+.checkbox {
+  transform: scale(1.2);
+  accent-color: var(--color-primary);
+}
+
+.checkboxText {
+  font-weight: 500;
+  color: var(--color-text-main);
+}
+
+/* Confirmation dialog styles */
+.confirmDialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1001; /* Higher than popper */
+}
+
+.confirmContent {
+  background-color: var(--color-surface);
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--box-shadow-default);
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+.confirmContent h3 {
+  margin-top: 0;
+  color: var(--color-text-main);
+  font-size: 1.25rem;
+}
+
+.confirmContent p {
+  color: var(--color-text-main);
+  margin-bottom: 1.5rem;
+  line-height: 1.4;
+}
+
+.confirmButtons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}

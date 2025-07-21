@@ -22,11 +22,28 @@
   gap: 0.2rem;
 }
 
+.titleContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.3rem;
+  flex-wrap: wrap;
+}
+
 .title {
   font-size: 1rem;
   font-weight: 600;
   margin: 0;
   line-height: 1.2;
+}
+
+.navBadge {
+  font-size: 0.8rem;
+  background-color: var(--color-secondary);
+  color: white;
+  padding: 0.1rem 0.3rem;
+  border-radius: 4px;
+  line-height: 1;
 }
 
 .playersInfo {

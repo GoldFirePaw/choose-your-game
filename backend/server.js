@@ -47,16 +47,67 @@ app.get("/games", async (req, res) => {
 // POST /games
 app.post("/games", async (req, res) => {
   try {
-    const { name, minimumPlayers, maximumPlayers, players = [] } = req.body;
+    console.log("📨 Données reçues pour créer un jeu :", req.body);
+    
+    const { name, minimumPlayers, maximumPlayers, players = [], isNavGame = false } = req.body;
+    
+    // Validate required fields
+    if (!name || typeof name !== 'string') {
+      return res.status(400).json({ error: "Le nom du jeu est requis" });
+    }
+    
+    if (!minimumPlayers || !maximumPlayers) {
+      return res.status(400).json({ error: "Le nombre de joueurs min/max est requis" });
+    }
+    
+    console.log("🎮 Players data:", players);
+    
     const game = {
       name,
-      minimumPlayers,
-      maximumPlayers,
-      players: players.map((id) => new ObjectId(id)),
+      minimumPlayers: parseInt(minimumPlayers),
+      maximumPlayers: parseInt(maximumPlayers),
+      players: players.map((player) => {
+        try {
+          // Handle both string IDs and player objects
+          const id = typeof player === 'string' ? player : player._id;
+          console.log("🆔 Converting player ID:", id);
+          
+          // Validate ObjectId format (24 character hex string)
+          if (!id || typeof id !== 'string' || id.length !== 24 || !/^[0-9a-fA-F]+$/.test(id)) {
+            throw new Error(`Invalid ObjectId format: ${id}`);
+          }
+          
+          return new ObjectId(id);
+        } catch (err) {
+          console.error("❌ Erreur conversion ObjectId:", err);
+          throw new Error(`Invalid player ID: ${JSON.stringify(player)} - ${err.message}`);
+        }
+      }),
+      isNavGame: Boolean(isNavGame),
     };
+    
+    console.log("💾 Game object to save:", game);
+    
+    // Check if database is connected
+    if (!db) {
+      console.error("❌ Database not connected");
+      return res.status(500).json({ error: "Database connection error" });
+    }
+    
     const result = await db.collection("games").insertOne(game);
-    res.status(201).json({ ...game, _id: result.insertedId });
+    console.log("✅ Insert result:", result);
+    
+    // Format the response to match the expected structure
+    const formattedGame = {
+      ...game,
+      _id: result.insertedId.toString(),
+      players: game.players.map(id => id.toString())
+    };
+    
+    console.log("📤 Returning formatted game:", formattedGame);
+    res.status(201).json(formattedGame);
   } catch (err) {
+    console.error("❌ Erreur POST /games :", err);
     res.status(500).json({ error: "Erreur serveur" });
   }
 });
@@ -67,7 +118,7 @@ app.put("/games/:id", async (req, res) => {
     const gameId = new ObjectId(req.params.id);
     console.log("🧩 ID reçu dans la route :", gameId);
 
-    const allowedFields = ["name", "minimumPlayers", "maximumPlayers", "players"];
+    const allowedFields = ["name", "minimumPlayers", "maximumPlayers", "players", "isNavGame"];
     const updateFields = {};
 
     allowedFields.forEach((field) => {
@@ -81,29 +132,30 @@ app.put("/games/:id", async (req, res) => {
 
     console.log("✏️ Champs à mettre à jour :", updateFields);
 
-    const result = await client
-      .db(dbName)
+    const result = await db
       .collection("games")
       .findOneAndUpdate(
         { _id: gameId },
         { $set: updateFields },
-        { returnOriginal: "false" } 
+        { returnDocument: "after" } 
       );
 
     console.log("🧪 Résultat brut :", result);
-    console.log("🎯 Résultat .value :", result.value);
 
-    console.log("🧪 Document retourné :", result);
+    if (!result) {
+      console.log("🟥 Aucun jeu trouvé avec cet ID.");
+      return res.status(404).json({ error: "Game not found" });
+    }
 
-if (!result) {
-  console.log("🟥 Aucun jeu trouvé avec cet ID.");
-  return res.status(404).json({ error: "Game not found" });
-}
+    // Format the response to match the expected structure
+    const formattedGame = {
+      ...result,
+      _id: result._id.toString(),
+      players: result.players?.map(id => id.toString()) || []
+    };
 
-res.json(result);
-
-    console.log("✅ Jeu mis à jour :", result.value);
-    res.json(result.value);
+    console.log("✅ Jeu mis à jour :", formattedGame);
+    res.json(formattedGame);
   } catch (err) {
     console.error("🔥 Erreur PUT /games/:id :", err);
     res.status(500).json({ error: "Erreur serveur" });
@@ -113,10 +165,25 @@ res.json(result);
 // DELETE /games/:id
 app.delete("/games/:id", async (req, res) => {
   try {
-    const result = await db.collection("games").deleteOne({ _id: new ObjectId(req.params.id) });
-    if (result.deletedCount === 0) return res.status(404).json({ error: "Game not found" });
-    res.json({ success: true });
+    console.log("🗑️ Deleting game with ID:", req.params.id);
+    
+    // Validate ObjectId format
+    if (!req.params.id || req.params.id.length !== 24 || !/^[0-9a-fA-F]+$/.test(req.params.id)) {
+      return res.status(400).json({ error: "Invalid game ID format" });
+    }
+    
+    const gameId = new ObjectId(req.params.id);
+    const result = await db.collection("games").deleteOne({ _id: gameId });
+    
+    if (result.deletedCount === 0) {
+      console.log("🟥 Game not found for deletion");
+      return res.status(404).json({ error: "Game not found" });
+    }
+    
+    console.log("✅ Game deleted successfully");
+    res.json({ success: true, message: "Game deleted successfully" });
   } catch (err) {
+    console.error("❌ Error deleting game:", err);
     res.status(500).json({ error: "Erreur serveur" });
   }
 });
