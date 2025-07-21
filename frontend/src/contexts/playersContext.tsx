@@ -9,7 +9,10 @@ type PlayersContextType = {
   players: Player[];
   loading: boolean;
   addPlayer: (name: string) => Promise<void>;
-  deletePlayer: (id: string) => Promise<void>;
+  deletePlayer: (
+    id: string,
+    password: string
+  ) => Promise<{ success: boolean; error?: string }>;
   selectedPlayerId: string | null;
   handleSelectPlayer: (id: string | null) => void;
 };
@@ -48,11 +51,15 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const deletePlayer = async (id: string) => {
-    const success = await apiDeletePlayer(id);
-    if (success) {
+  const deletePlayer = async (
+    id: string,
+    password: string
+  ): Promise<{ success: boolean; error?: string }> => {
+    const result = await apiDeletePlayer(id, password);
+    if (result.success) {
       setPlayers((prev) => prev.filter((player) => player._id !== id));
     }
+    return result;
   };
 
   const handleSelectPlayer = (id: string | null) => {

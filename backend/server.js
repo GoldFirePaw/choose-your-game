@@ -10,6 +10,9 @@ const PORT = process.env.PORT || 3001;
 const client = new MongoClient(process.env.MONGO_URI);
 const dbName = "choose-your-game";
 
+// Admin password for destructive operations (default: "admin123")
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD
+
 let db; // Connexion unique réutilisable
 
 // Connexion unique à MongoDB
@@ -32,6 +35,23 @@ let db; // Connexion unique réutilisable
 app.use(compression()); // Enable gzip compression
 app.use(cors());
 app.use(bodyParser.json());
+
+// Password validation middleware for destructive operations
+const validateAdminPassword = (req, res, next) => {
+  const { adminPassword } = req.body;
+  
+  if (!adminPassword) {
+    return res.status(401).json({ error: "Password required for this operation" });
+  }
+  
+  if (adminPassword !== ADMIN_PASSWORD) {
+    console.log("🔐 Invalid admin password attempt");
+    return res.status(403).json({ error: "Invalid admin password" });
+  }
+  
+  console.log("✅ Admin password validated");
+  next();
+};
 
 /* =======================
    ROUTES GAMES
@@ -170,8 +190,8 @@ app.put("/games/:id", async (req, res) => {
   }
 });
 
-// DELETE /games/:id
-app.delete("/games/:id", async (req, res) => {
+// DELETE /games/:id (requires admin password)
+app.delete("/games/:id", validateAdminPassword, async (req, res) => {
   try {
     console.log("🗑️ Deleting game with ID:", req.params.id);
     
@@ -264,18 +284,22 @@ app.post("/players", async (req, res) => {
   }
 });
 
-// DELETE /players/:id (et supprime des jeux)
-app.delete("/players/:id", async (req, res) => {
+// DELETE /players/:id (requires admin password)
+app.delete("/players/:id", validateAdminPassword, async (req, res) => {
   try {
+    console.log("🗑️ Deleting player with ID:", req.params.id);
     const playerId = new ObjectId(req.params.id);
 
     const result = await db.collection("players").deleteOne({ _id: playerId });
     if (result.deletedCount === 0) return res.status(404).json({ error: "Player not found" });
 
+    // Remove player from all games
     await db.collection("games").updateMany({}, { $pull: { players: playerId } });
+    console.log("✅ Player deleted and removed from all games");
 
     res.json({ success: true });
   } catch (err) {
+    console.error("❌ Error deleting player:", err);
     res.status(500).json({ error: "Erreur serveur" });
   }
 });
