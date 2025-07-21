@@ -19,6 +19,7 @@ type GamesContextType = {
       minimumPlayers: number;
       maximumPlayers: number;
       players: string[];
+      isNavGame?: boolean;
     }
   ) => Promise<void>;
 };
@@ -64,8 +65,10 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
     console.log("📦 Réponse backend après updateGame :", updated);
 
     if (updated) {
-      console.log("📦 updateGame terminé, on refetch...");
-      fetchGames();
+      console.log("✅ Updating game in local state immediately");
+      setGames((prev) =>
+        prev.map((game) => (game._id === id ? updated : game))
+      );
     }
   };
 
