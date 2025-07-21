@@ -2,6 +2,7 @@ import { useState } from "react";
 import s from "./GamesList.module.css";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { GameCard } from "../GameCard/GameCard";
+import { LoadingSkeleton } from "../LoadingSkeleton/LoadingSkeleton";
 
 export const GamesList = () => {
   const { games, loading } = useGamesContext();
@@ -27,7 +28,13 @@ export const GamesList = () => {
       />
 
       {loading ? (
-        <p>Chargement...</p>
+        <LoadingSkeleton count={8} />
+      ) : filteredGames.length === 0 ? (
+        <p className={s.noGames}>
+          {searchTerm
+            ? `Aucun jeu trouvé pour "${searchTerm}"`
+            : "Aucun jeu disponible"}
+        </p>
       ) : (
         <div className={s.gamesListContainer}>
           {filteredGames.map((game) => (

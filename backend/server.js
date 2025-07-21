@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const compression = require("compression");
 const { MongoClient, ObjectId } = require("mongodb");
 
 const app = express();
@@ -17,11 +18,18 @@ let db; // Connexion unique réutilisable
     await client.connect();
     db = client.db(dbName);
     console.log(`✅ Connexion MongoDB établie à ${dbName}`);
+    
+    // Create indexes for better performance
+    await db.collection("games").createIndex({ name: 1 });
+    await db.collection("games").createIndex({ players: 1 });
+    await db.collection("players").createIndex({ name: 1 });
+    console.log("📈 Index MongoDB créés pour optimiser les performances");
   } catch (err) {
     console.error("❌ Erreur de connexion MongoDB :", err);
   }
 })();
 
+app.use(compression()); // Enable gzip compression
 app.use(cors());
 app.use(bodyParser.json());
 

@@ -43,9 +43,22 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
       return;
     }
 
-    setLoading(true);
+    // Only show loading state if we have no games yet (initial load)
+    if (games.length === 0) {
+      setLoading(true);
+    }
+
+    const startTime = Date.now();
+    console.log("⏱️ Starting fetch games...");
+
     const data = await getGames();
-    console.log("🎯 Données fetchées du backend :", data);
+    const fetchTime = Date.now() - startTime;
+    console.log(
+      `🎯 Données fetchées du backend en ${fetchTime}ms:`,
+      data.length,
+      "games"
+    );
+
     setGames(data);
     setLastFetch(now);
     setLoading(false);
