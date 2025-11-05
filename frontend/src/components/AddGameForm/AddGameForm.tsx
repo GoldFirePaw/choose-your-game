@@ -87,6 +87,14 @@ export const AddGameForm = () => {
           className={s.input}
           disabled={isLoading()}
         />
+        <input
+          type="hidden"
+          value={max}
+          onChange={(e) => setMax(Number(e.target.value))}
+          required
+          className={s.input}
+          disabled={isLoading()}
+        />
 
         <div className={s.navGameContainer}>
           <label className={s.navGameLabel}>
