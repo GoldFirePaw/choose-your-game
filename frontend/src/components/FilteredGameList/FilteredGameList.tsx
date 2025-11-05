@@ -16,16 +16,20 @@ export const FilteredGameList = ({
   const filteredGames =
     playerCount === 0
       ? []
-      : games.filter((game: Game) => {
-          const ownedByAll = selectedPlayers.every((p) =>
-            game.players?.includes(p._id)
-          );
-          const compatiblePlayerCount =
-            game.minimumPlayers <= playerCount &&
-            playerCount <= game.maximumPlayers;
+      : games
+          .filter((game: Game) => {
+            const ownedByAll = selectedPlayers.every((p) =>
+              game.players?.includes(p._id)
+            );
+            const compatiblePlayerCount =
+              game.minimumPlayers <= playerCount &&
+              playerCount <= game.maximumPlayers;
 
-          return ownedByAll && compatiblePlayerCount;
-        });
+            return ownedByAll && compatiblePlayerCount;
+          })
+          .sort((a, b) =>
+            a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+          );
 
   return (
     <div className={s.container}>

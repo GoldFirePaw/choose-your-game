@@ -13,7 +13,9 @@ export const GamesList = () => {
     .filter((game) =>
       game.name.toLowerCase().includes(searchTerm.toLowerCase())
     )
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .sort((a, b) =>
+      a.name.toLowerCase().localeCompare(b.name.toLowerCase())
+    );
 
   return (
     <div>
