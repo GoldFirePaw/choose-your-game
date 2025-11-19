@@ -1,10 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import s from "./GamesList.module.css";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { GameCard } from "../GameCard/GameCard";
 import { LoadingSkeleton } from "../LoadingSkeleton/LoadingSkeleton";
 
-export const GamesList = () => {
+export const GamesList: React.FC = () => {
   const { games, loading } = useGamesContext();
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,8 +16,10 @@ export const GamesList = () => {
     .sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <div>
-      <h1 id="games-list">Liste des jeux</h1>
+    <div className={s.wrapper}>
+      <h1 className={s.title} id="games-list">
+        Liste des jeux
+      </h1>
 
       <input
         type="text"

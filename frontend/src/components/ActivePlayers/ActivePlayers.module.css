@@ -1,76 +1,93 @@
+.instructions {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-top: 0.3rem;
+  text-align: center;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+/* Container for all players */
 .playersContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 1rem;
   justify-content: center;
+  margin-top: 1rem;
 }
 
+/* Each player card */
 .playerContainer {
-  position: relative;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem;
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
+  gap: 0.6rem;
+
+  padding: 0.7rem 1rem;
+
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+
+  color: var(--text-main);
   font-size: 1rem;
-  color: var(--color-text-main);
+
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.1s ease;
-  box-shadow: var(--box-shadow-default);
-  min-width: 140px;
-  max-width: 100%;
-  flex: 1 1 calc(33.333% - 1rem);
-  white-space: nowrap;
-  touch-action: manipulation;
+
+  min-width: 160px;
+  flex: 1 1 calc(33.33% - 1rem);
+
+  transition: background 0.2s ease, box-shadow 0.2s ease,
+              transform 0.1s ease;
 }
 
 .playerContainer:hover {
-  background-color: var(--color-background-soft);
-  transform: scale(1.02);
+  background: var(--surface-medium);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
-.playerContainer::after {
-  content: "✏️";
-  margin-left: 0.5rem;
-  font-size: 0.95rem;
-  opacity: 0.85;
-  pointer-events: none;
+/* Checkbox alignment */
+.checkboxLabel {
+  display: flex;
+  align-items: center;
 }
 
-.playerContainer input[type="checkbox"] {
-  transform: scale(1.1);
+.checkboxLabel input {
+  transform: scale(1.2);
   cursor: pointer;
-  accent-color: var(--color-secondary);
+  accent-color: var(--accent);
 }
 
-.playerContainer input[type="checkbox"]:focus-visible {
-  outline: 2px solid var(--color-secondary);
-  outline-offset: 2px;
+/* Player name clickable */
+.playerName {
+  flex: 1;
+  cursor: pointer;
 }
 
-.instructions {
-  font-size: 0.875rem;
-  font-style: italic;
-  color: var(--color-muted);
-  margin-top: 0.25rem;
-  text-align: center;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+/* Small edit button */
+.editBtn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.1rem;
+  font-size: 0.9rem;
+  opacity: 0.7;
 }
 
-/* Responsive tablette */
+.editBtn:hover {
+  opacity: 1;
+}
+
+/* Tablet */
 @media (max-width: 900px) {
   .playerContainer {
     flex: 1 1 calc(50% - 1rem);
   }
 }
 
-/* Responsive mobile */
+/* Mobile */
 @media (max-width: 600px) {
   .playerContainer {
     flex: 1 1 100%;

@@ -1,34 +1,24 @@
-.dataStatus {
+.status {
+  font-size: 0.95rem;
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface-medium);
+  color: var(--text-main);
+
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 16px;
-  background: var(--card-background);
-  border-radius: 8px;
-  margin-bottom: 16px;
-  font-size: 14px;
+  gap: 0.35rem;
+
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
 }
 
-.statusInfo {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.ok {
+  color: #2ecc71; /* joli vert pastel */
 }
 
 .loading {
-  color: var(--accent-color);
-  font-weight: 500;
-}
-
-.fresh {
-  color: var(--success-color, #22c55e);
-  font-weight: 500;
-}
-
-@media (max-width: 768px) {
-  .dataStatus {
-    flex-direction: column;
-    gap: 8px;
-    text-align: center;
-  }
+  color: #f39c12; /* jaune/orange "chargement" */
 }

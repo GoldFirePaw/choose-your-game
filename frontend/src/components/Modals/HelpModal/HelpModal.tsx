@@ -8,10 +8,20 @@ export const HelpModal = () => {
 
   return (
     <>
-      <div className={s.buttonsContainer}>
-        <Button onClick={() => setIsOpen(true)} label="❓ Aide" />
-        <DataStatus />
-      </div>
+      <div className={s.toolbar}>
+  <Button
+    onClick={() => setIsOpen(true)}
+    label="❔ Aide"
+    className={s.toolbarButton}
+  />
+  <DataStatus />
+  <Button
+    onClick={() => window.location.reload()}
+    label="🔄 Recharger"
+    className={s.toolbarButton}
+  />
+</div>
+
       {isOpen && (
         <div className={s.backdrop} onClick={() => setIsOpen(false)}>
           <div className={s.modal} onClick={(e) => e.stopPropagation()}>

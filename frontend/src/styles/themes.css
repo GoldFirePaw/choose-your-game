@@ -1,0 +1,192 @@
+:root[data-theme="nebula"] {
+  --bg: #DFFBF7; 
+  --surface: #C9D4F0;
+  --surface-medium: #6A61B3;
+
+  --danger: #3B2869;
+  --danger-hover: #4F4698;
+
+  --text-main: #2D2251;
+  --text-secondary: color-mix(in srgb, #2D2251 70%, transparent);
+
+  --accent: #3B82C4;
+  --accent-hover: #2C6EA9;
+
+  --border: color-mix(in srgb, #2D2251 20%, transparent);
+
+  --radius: 12px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 3px 5px rgba(0,0,0,0.12);
+  --shadow-md: 0 6px 14px rgba(0,0,0,0.18);
+
+  --input-bg: #EDF7FF;
+  --input-border: color-mix(in srgb, #2D2251 25%, transparent);
+
+  --button-primary-bg: #3B82C4;
+  --button-primary-hover: #2C6EA9;
+  --button-primary-text: #ffffff;
+
+  --button-secondary-bg: #6A61B3;
+  --button-secondary-hover: #50489A;
+  --button-secondary-text: #ffffff;
+
+  --card-padding: 1.5rem;
+}
+
+:root[data-theme="forest"] {
+  --bg: #E3EBE4;
+  --surface: #C6D6A5;
+  --surface-medium: #7FA160;
+
+  --danger: #1B2727;
+  --danger-hover: #3C5148;
+
+  --text-main: #1B2727;
+  --text-secondary: color-mix(in srgb, #1B2727 70%, transparent);
+
+  --accent: #7FA160;
+  --accent-hover: #5C7A47;
+
+  --border: color-mix(in srgb, #1B2727 20%, transparent);
+
+  --radius: 12px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 3px 5px rgba(0,0,0,0.12);
+  --shadow-md: 0 6px 14px rgba(0,0,0,0.18);
+
+  --input-bg: #EFF5F0;
+  --input-border: color-mix(in srgb, #1B2727 25%, transparent);
+
+  --button-primary-bg: var(--accent);
+  --button-primary-hover: var(--accent-hover);
+  --button-primary-text: white;
+
+  --button-secondary-bg: #C6D6A5;
+  --button-secondary-hover: #7FA160;
+  --button-secondary-text: #1B2727;
+
+  --card-padding: 1.5rem;
+}
+
+:root[data-theme="sunset"] {
+  --bg: #F9E6E9;
+  --surface: #D8A4D1;
+  --surface-medium: #6A5B99;
+
+  --danger: #F1916D;
+  --danger-hover: #D47958;
+
+  --text-main: #2A2A55;
+  --text-secondary: color-mix(in srgb, #2A2A55 70%, transparent);
+
+  --accent: #F1916D;
+  --accent-hover: #D47958;
+
+  --border: color-mix(in srgb, #2A2A55 20%, transparent);
+
+  --radius: 12px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 3px 5px rgba(0,0,0,0.12);
+  --shadow-md: 0 6px 14px rgba(0,0,0,0.18);
+
+  --input-bg: #F2D5E9;
+  --input-border: color-mix(in srgb, #2A2A55 25%, transparent);
+
+  --button-primary-bg: var(--accent);
+  --button-primary-hover: var(--accent-hover);
+  --button-primary-text: white;
+
+  --button-secondary-bg: var(--surface-medium);
+  --button-secondary-hover: #584C86;
+  --button-secondary-text: white;
+
+  --card-padding: 1.5rem;
+}
+
+:root[data-theme="amethyst"] {
+  --bg: #FCECE3;
+  --surface: #B6788F;
+  --surface-medium: #6A3C71;
+
+  --danger: #2B124C;
+  --danger-hover: #190019;
+
+  --text-main: #2B124C;
+  --text-secondary: color-mix(in srgb, #2B124C 65%, transparent);
+
+  --accent: #B6788F;
+  --accent-hover: #8F5170;
+
+  --border: color-mix(in srgb, #2B124C 20%, transparent);
+
+  --radius: 12px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 3px 5px rgba(0,0,0,0.12);
+  --shadow-md: 0 6px 14px rgba(0,0,0,0.18);
+
+  --input-bg: #F7DFD6;
+  --input-border: color-mix(in srgb, #2B124C 25%, transparent);
+
+  --button-primary-bg: var(--accent);
+  --button-primary-hover: var(--accent-hover);
+  --button-primary-text: white;
+
+  --button-secondary-bg: var(--surface-medium);
+  --button-secondary-hover: #522B5B;
+  --button-secondary-text: white;
+
+  --card-padding: 1.5rem;
+}
+
+:root[data-theme="iceberg"] {
+  --bg: #D5E2EF;
+  --surface: #BACAD9;
+  --surface-medium: #8294A8;
+
+  --danger: #4A5B6A;
+  --danger-hover: #2F4150;
+
+  --text-main: #263A47;
+  --text-secondary: color-mix(in srgb, #263A47 70%, transparent);
+
+  --accent: #8294A8;
+  --accent-hover: #5F7184;
+
+  --border: color-mix(in srgb, #263A47 20%, transparent);
+
+  --radius: 12px;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 3px 5px rgba(0,0,0,0.12);
+  --shadow-md: 0 6px 14px rgba(0,0,0,0.18);
+
+  --input-bg: #E4EDF7;
+  --input-border: color-mix(in srgb, #263A47 25%, transparent);
+
+  --button-primary-bg: var(--accent);
+  --button-primary-hover: var(--accent-hover);
+  --button-primary-text: white;
+
+  --button-secondary-bg: var(--surface-medium);
+  --button-secondary-hover: var(--surface);
+  --button-secondary-text: #263A47;
+
+  --card-padding: 1.5rem;
+}
+
+input[type="checkbox"] {
+  accent-color: var(--accent);
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+

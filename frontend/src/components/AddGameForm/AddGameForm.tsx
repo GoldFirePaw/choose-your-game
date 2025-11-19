@@ -1,23 +1,23 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { usePlayerContext } from "../../contexts/playersContext";
 import { useSubmitWithDebounce } from "../../hooks/useDebounce";
 import s from "./AddGameForm.module.css";
 import { Button } from "../Buttons/Button";
 
-export const AddGameForm = () => {
+export const AddGameForm: React.FC = () => {
   const [name, setName] = useState("");
   const [min, setMin] = useState(1);
   const [max, setMax] = useState(4);
   const [isNavGame, setIsNavGame] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
+
   const { addGame } = useGamesContext();
   const { players } = usePlayerContext();
 
   const handleAddGame = async () => {
     if (!name.trim()) return;
 
-    // If it's a nav game, assign to all players
     const gameData = {
       name,
       minimumPlayers: min,
@@ -60,42 +60,43 @@ export const AddGameForm = () => {
   return (
     <>
       <form onSubmit={handleSubmit} className={s.form}>
-        <h2 id="add-game" className={s.title}>
-          Ajouter un jeu
-        </h2>
+        <h2 className={s.title}>Ajouter un jeu</h2>
+
         <input
+          className={s.input}
+          placeholder="Nom"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Nom"
-          required
-          className={s.input}
           disabled={isLoading()}
+          required
         />
+
         <input
+          className={s.input}
           type="number"
           value={min}
           onChange={(e) => setMin(Number(e.target.value))}
-          required
-          className={s.input}
           disabled={isLoading()}
+          required
         />
+
         <input
+          className={s.input}
           type="number"
           value={max}
           onChange={(e) => setMax(Number(e.target.value))}
-          required
-          className={s.input}
           disabled={isLoading()}
+          required
         />
 
         <div className={s.navGameContainer}>
           <label className={s.navGameLabel}>
             <input
               type="checkbox"
+              className={s.checkbox}
               checked={isNavGame}
               onChange={(e) => handleNavGameChange(e.target.checked)}
               disabled={isLoading()}
-              className={s.checkbox}
             />
             <span className={s.checkboxText}>
               🧭 Jeu de navigateur (possédé par tous les joueurs)
@@ -115,9 +116,10 @@ export const AddGameForm = () => {
           <div className={s.confirmContent}>
             <h3>Confirmation</h3>
             <p>
-              Êtes-vous sûr que c'est un jeu de navigateur ? Il sera
-              automatiquement ajouté à tous les joueurs.
+              Êtes-vous sûr que c'est un jeu de navigateur ? Il sera ajouté à
+              tous les joueurs.
             </p>
+
             <div className={s.confirmButtons}>
               <Button
                 label="Oui, c'est un jeu de navigateur"
