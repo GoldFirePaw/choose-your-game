@@ -1,35 +1,54 @@
 .button {
-    display: inline-block;
-    color: #fff;
-    border: none;
-    border-radius: 32px;
-    cursor: pointer;
-    text-align: center;
-    transition: opacity 0.2s ease, background-color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.55rem 1.4rem;
+  font-size: 1rem;
+  font-weight: 600;
+
+  border: none;
+  border-radius: var(--radius-pill);
+
+  cursor: pointer;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.1s ease;
+
+  user-select: none;
 }
 
+/* Disabled */
 .button:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    pointer-events: none;
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
-.primaryButton {
-    background-color: #301c9f;
-    padding: 10px 20px;
-    font-size: 16px;
+/* PRIMARY */
+.primary {
+  background-color: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  box-shadow: var(--shadow-sm);
 }
 
-.primaryButton:hover:not(:disabled) {
-    background-color: #2517a1;
+.primary:hover:not(:disabled) {
+  background-color: var(--button-primary-hover);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
-.secondaryButton {
-    background-color: #c0392b;
-    border-radius: 20px;
-    padding: 10px 20px;
+/* SECONDARY */
+.secondary {
+  background-color: var(--button-secondary-bg);
+  color: var(--button-secondary-text);
+  border: 1px solid var(--border);
 }
 
-.secondaryButton:hover:not(:disabled) {
-    background-color: #a93226;
+.secondary:hover:not(:disabled) {
+  background-color: var(--button-secondary-hover);
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
 }

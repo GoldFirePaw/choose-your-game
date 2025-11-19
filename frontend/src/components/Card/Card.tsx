@@ -1,71 +1,71 @@
+import React from "react";
+import cx from "classnames";
+import s from "./Card.module.css";
+
 import { ActivePlayers } from "../ActivePlayers/ActivePlayers";
 import { AddGameForm } from "../AddGameForm/AddGameForm";
 import { AddPlayerForm } from "../AddPlayerForm/AddPlayerForm";
 import { FilteredGameList } from "../FilteredGameList/FilteredGameList";
 import { GamesList } from "../GamesList/GamesList";
-import s from "./Card.module.css";
-import cx from "classnames";
-import type { Player } from "../../types";
 
-type CardProps = {
-  content: ContentType;
-  selected?: Player[];
-  onChange?: (players: Player[]) => void;
-  selectedPlayers?: Player[];
-  gameId?: string;
-  isActive?: boolean;
-  setActiveGameId?: (id: string | null) => void;
-  setModalContent?: (content: string) => void;
-};
+import type { Player } from "../../types";
 
 type ContentType =
   | "gamesList"
   | "activePlayers"
   | "addAGame"
   | "addAPlayer"
-  | "filteredGameList"
-  | "playersList";
+  | "filteredGameList";
 
-export const Card = ({
+interface CardProps {
+  content: ContentType;
+  selected?: Player[];
+  onChange?: (players: Player[]) => void;
+  selectedPlayers?: Player[];
+  setModalContent?: (content: string) => void;
+}
+
+export const Card: React.FC<CardProps> = ({
   content,
   selected,
   onChange,
   selectedPlayers,
   setModalContent,
-}: CardProps) => {
-  let cardContent;
-  switch (content) {
-    case "gamesList":
-      cardContent = <GamesList />;
-      break;
-    case "activePlayers":
-      cardContent = onChange && selected && setModalContent && (
-        <ActivePlayers
-          setModalContent={setModalContent}
-          selected={selected}
-          onChange={onChange}
-        />
-      );
-      break;
-    case "addAGame":
-      cardContent = <AddGameForm />;
-      break;
-    case "addAPlayer":
-      cardContent = <AddPlayerForm />;
-      break;
-    case "filteredGameList":
-      cardContent = selectedPlayers && (
-        <FilteredGameList selectedPlayers={selectedPlayers} />
-      );
-      break;
-    default:
-      cardContent = "Default content goes here";
-      break;
-  }
+}) => {
+  const renderContent = () => {
+    switch (content) {
+      case "gamesList":
+        return <GamesList />;
+
+      case "activePlayers":
+        if (!onChange || !selected || !setModalContent) return null;
+        return (
+          <ActivePlayers
+            selected={selected}
+            onChange={onChange}
+            setModalContent={setModalContent}
+          />
+        );
+
+      case "addAGame":
+        return <AddGameForm />;
+
+      case "addAPlayer":
+        return <AddPlayerForm />;
+
+      case "filteredGameList":
+        return selectedPlayers ? (
+          <FilteredGameList selectedPlayers={selectedPlayers} />
+        ) : null;
+
+      default:
+        return null;
+    }
+  };
 
   return (
-    <div className={cx(s.cardContainer, content && s[content])}>
-      {cardContent}
+    <div className={cx(s.cardContainer, s[content])}>
+      {renderContent()}
     </div>
   );
 };

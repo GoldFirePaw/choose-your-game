@@ -1,95 +1,95 @@
+/* Base card */
 .gameCard {
-  border: 1px solid var(--color-border);
-  border-radius: 6px;
-  padding: 0.5rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
+  padding: 1rem 1.2rem;
   width: 100%;
-  background-color: var(--color-surface);
+
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 0.4rem;
-  min-width: 0;
-  box-sizing: border-box;
-  font-size: 0.85rem;
-  box-shadow: var(--box-shadow-default);
+  gap: 0.6rem;
+
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition);
 }
 
-.gameInfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.2rem;
+/* Hover effect */
+.gameCard:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
+/* Title */
 .titleContainer {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.3rem;
+  gap: 0.4rem;
   flex-wrap: wrap;
 }
 
 .title {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  margin: 0;
-  line-height: 1.2;
+  color: var(--text-main);
 }
 
+/* Nav game badge */
 .navBadge {
-  font-size: 0.8rem;
-  background-color: var(--color-secondary);
+  background: var(--accent);
   color: white;
-  padding: 0.1rem 0.3rem;
-  border-radius: 4px;
+
+  padding: 0.15rem 0.35rem;
+  border-radius: var(--radius);
+  font-size: 0.75rem;
+
   line-height: 1;
 }
 
+/* Players info */
 .playersInfo {
   font-size: 0.85rem;
+  color: var(--text-secondary);
   margin: 0;
-  line-height: 1.2;
 }
 
+/* Buttons row */
 .buttonsRow {
   display: flex;
-  gap: 0.4rem;
-  flex-wrap: wrap;
+  gap: 0.5rem;
   justify-content: center;
+  flex-wrap: wrap;
   margin-top: 0.3rem;
 }
 
+/* Ensure Buttons adopt pill radius gracefully */
 .buttonsRow button {
   font-size: 0.75rem;
-  padding: 0.3rem 0.6rem;
-  height: auto;
-  border-radius: 5px;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-pill);
   white-space: nowrap;
 }
 
-/* === Responsive mobile === */
+/* Responsive */
 @media screen and (max-width: 500px) {
   .gameCard {
-    padding: 0.6rem 0.8rem;
-    font-size: 0.8rem;
+    padding: 0.7rem 1rem;
   }
 
   .title {
-    font-size: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .playersInfo {
     font-size: 0.75rem;
   }
 
-  .buttonsRow {
-    gap: 0.3rem;
-    margin-top: 0.2rem;
-  }
-
   .buttonsRow button {
     font-size: 0.7rem;
-    padding: 0.25rem 0.5rem;
+    padding: 0.3rem 0.6rem;
   }
 }

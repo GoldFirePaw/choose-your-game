@@ -1,3 +1,4 @@
+import React from "react";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { GamePlayersCheckboxes } from "../GamePlayersCheckboxes/GamePlayersCheckboxes";
 import s from "./GameCard.module.css";
@@ -5,14 +6,18 @@ import { Button, SecondaryButton } from "../Buttons/Button";
 import { PasswordDialog } from "../PasswordDialog/PasswordDialog";
 import { usePasswordProtectedDelete } from "../../hooks/usePasswordProtectedDelete";
 
-type Props = {
+interface GameCardProps {
   gameId: string;
   isActive: boolean;
   setActiveGameId: (id: string | null) => void;
-};
+}
 
-export const GameCard = ({ isActive, setActiveGameId, gameId }: Props) => {
-  const { deleteGame, games } = useGamesContext();
+export const GameCard: React.FC<GameCardProps> = ({
+  gameId,
+  isActive,
+  setActiveGameId,
+}) => {
+  const { games, deleteGame } = useGamesContext();
   const {
     showPasswordDialog,
     loading,
@@ -42,12 +47,14 @@ export const GameCard = ({ isActive, setActiveGameId, gameId }: Props) => {
           <span className={s.title}>{game.name}</span>
           {game.isNavGame && <span className={s.navBadge}>🧭</span>}
         </div>
+
         <p className={s.playersInfo}>
           Joueurs : {game.minimumPlayers}–{game.maximumPlayers}
         </p>
+
         <div className={s.buttonsRow}>
           <Button
-            label={"Editer"}
+            label="Éditer"
             onClick={() => setActiveGameId(isActive ? null : game._id)}
           />
           <SecondaryButton label="✖️" onClick={handleDeleteClick} />
@@ -56,7 +63,7 @@ export const GameCard = ({ isActive, setActiveGameId, gameId }: Props) => {
 
       {isActive && (
         <GamePlayersCheckboxes
-          key={game._id + "-modal"}
+          key={`${game._id}-modal`}
           gameId={game._id}
           setDisplayPlayers={() => setActiveGameId(null)}
         />
