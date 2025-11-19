@@ -1,26 +1,11 @@
-import React, {
-  createContext,
-  useContext,
-  useEffect,
-  useState,
-  type ReactNode,
-} from "react";
-
-type Theme = "nebula" | "forest" | "sunset" | "amethyst" | "iceberg";
-
-interface ThemeContextType {
-  theme: Theme;
-  setTheme: (theme: Theme) => void;
-}
-
-const ThemeContext = createContext<ThemeContextType>({
-  theme: "nebula",
-  setTheme: () => {},
-});
+import { useEffect, useState, type ReactNode } from "react";
+import { ThemeContext, type Theme } from "./themeStore";
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   const [theme, setTheme] = useState<Theme>(() => {
-    const saved = localStorage.getItem("theme") as Theme | null;
+    const saved = (typeof localStorage !== "undefined" && localStorage.getItem("theme")) as
+      | Theme
+      | null;
     return saved || "nebula";
   });
 
@@ -36,4 +21,4 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export const useTheme = (): ThemeContextType => useContext(ThemeContext);
+// `useTheme` moved to `src/contexts/themeStore.ts` to keep this file exporting only components

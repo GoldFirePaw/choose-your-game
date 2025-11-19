@@ -1,11 +1,11 @@
 import React from "react";
-import { useTheme } from "../../contexts/ThemeContext";
+import { useTheme, type Theme } from "../../contexts/themeStore";
 import s from "./ThemeSwitcher.module.css";
 
 export const ThemeSwitcher: React.FC = () => {
   const { theme, setTheme } = useTheme();
 
-  const themes = [
+  const themes: { id: Theme; label: string }[] = [
     { id: "nebula", label: "🌌 Nebula" },
     { id: "forest", label: "🌲 Forest" },
     { id: "sunset", label: "🌅 Sunset" },
@@ -19,7 +19,7 @@ export const ThemeSwitcher: React.FC = () => {
         <button
           key={t.id}
           className={`${s.button} ${theme === t.id ? s.active : ""}`}
-          onClick={() => setTheme(t.id as any)}
+          onClick={() => setTheme(t.id)}
           type="button"
         >
           {t.label}
