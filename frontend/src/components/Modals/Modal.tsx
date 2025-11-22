@@ -1,5 +1,4 @@
 import { PlayerDetails } from "./PlayerDetails";
-import { Button } from "../Buttons/Button";
 import s from "./Modal.module.css";
 
 type ModalProps = {
@@ -8,7 +7,11 @@ type ModalProps = {
   selectedPlayerId?: string;
 };
 
-export const Modal = ({ modalContent, onClose, selectedPlayerId }: ModalProps) => {
+export const Modal = ({
+  modalContent,
+  onClose,
+  selectedPlayerId,
+}: ModalProps) => {
   const renderContent = () => {
     switch (modalContent) {
       case "playerDetails":
@@ -25,10 +28,6 @@ export const Modal = ({ modalContent, onClose, selectedPlayerId }: ModalProps) =
     <div className={s.backdrop} onClick={onClose}>
       <div className={s.modal} onClick={(e) => e.stopPropagation()}>
         <div className={s.innerContent}>{renderContent()}</div>
-
-        <div className={s.footer}>
-          <Button label="Fermer" onClick={onClose} />
-        </div>
       </div>
     </div>
   );

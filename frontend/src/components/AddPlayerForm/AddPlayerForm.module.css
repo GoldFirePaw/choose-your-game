@@ -2,24 +2,19 @@
   display: flex;
   flex-direction: column;
   gap: 1rem;
-
-  background: var(--surface);
-  padding: 1.2rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-
-  transition: var(--transition);
 }
 
+/* ===== Title ===== */
 .title {
-  font-size: 1.3rem;
+  font-size: 1.35rem;
   font-weight: 600;
   color: var(--text-main);
-  margin-bottom: 0.3rem;
+  text-align: center;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.2px;
 }
 
-/* Input */
+/* ===== Input ===== */
 .input {
   padding: 0.75rem 1rem;
   font-size: 1rem;
@@ -28,15 +23,18 @@
   color: var(--text-main);
 
   border: 1px solid var(--input-border);
-  border-radius: var(--radius);
+  border-radius: calc(var(--radius) + 1px);
 
   transition: var(--transition);
+}
+
+.input:hover {
+  background: color-mix(in srgb, var(--input-bg) 75%, var(--surface-medium));
 }
 
 .input:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.25);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
 }
-
-/* Button handled by Button.module.css */

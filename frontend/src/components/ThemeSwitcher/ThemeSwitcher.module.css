@@ -31,6 +31,8 @@
 
 .themeMenu {
   position: absolute;
+  display: flex;
+  flex-direction: column;
   top: 10px;
   z-index: 100;
   display: flex;

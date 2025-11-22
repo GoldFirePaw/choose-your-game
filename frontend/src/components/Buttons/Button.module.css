@@ -3,62 +3,118 @@
   align-items: center;
   justify-content: center;
 
-  padding: 0.55rem 1.4rem;
+  padding: 0.6rem 1.5rem;
   font-size: 1rem;
   font-weight: 600;
+  line-height: 1;
 
   border: none;
   border-radius: var(--radius-pill);
 
   cursor: pointer;
+
   transition:
     background-color 0.25s ease,
     color 0.25s ease,
     box-shadow 0.25s ease,
-    transform 0.1s ease;
+    transform 0.12s ease,
+    border-color 0.25s ease;
 
   user-select: none;
 }
 
-/* SIZE VARIANTS */
+/* Size variants */
 .full {
   width: 100%;
-  max-width: 100%;
 }
 
 .small {
-  width: 150px;
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
 }
 
 /* Disabled */
 .button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
+  transform: none;
   box-shadow: none;
 }
 
-/* PRIMARY */
+/* === PRIMARY === */
 .primary {
-  background-color: var(--button-primary-bg);
+  background: var(--button-primary-bg);
   color: var(--button-primary-text);
   box-shadow: var(--shadow-sm);
 }
 
 .primary:hover:not(:disabled) {
-  background-color: var(--button-primary-hover);
+  background: var(--button-primary-hover);
   box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
 
-/* SECONDARY */
+.primary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.primary:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+/* === SECONDARY === */
 .secondary {
-  background-color: var(--button-secondary-bg);
+  background: var(--button-secondary-bg);
   color: var(--button-secondary-text);
   border: 1px solid var(--border);
 }
 
 .secondary:hover:not(:disabled) {
-  background-color: var(--button-secondary-hover);
+  background: var(--button-secondary-hover);
   box-shadow: var(--shadow-sm);
   transform: translateY(-1px);
+}
+
+.secondary:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.secondary:focus-visible {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
+}
+
+.button:active:not(:disabled) {
+  transform: scale(0.97);
+  box-shadow: var(--shadow-sm);
+}
+
+/* === GHOST BUTTON === */
+.ghost {
+  background: transparent;
+  color: var(--text-main);
+  border: 1px solid color-mix(in srgb, var(--text-main) 20%, transparent);
+
+  box-shadow: none;
+  padding: 0.55rem 1.4rem;
+}
+
+.ghost:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--text-main) 8%, transparent);
+  border-color: color-mix(in srgb, var(--text-main) 40%, transparent);
+  transform: translateY(-1px);
+}
+
+.ghost:active:not(:disabled) {
+  transform: scale(0.97);
+  background: color-mix(in srgb, var(--text-main) 15%, transparent);
+}
+
+.ghost:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
 }
