@@ -1,6 +1,7 @@
 import React from "react";
 import { useTheme, type Theme } from "../../contexts/themeStore";
 import s from "./ThemeSwitcher.module.css";
+import { Button } from "../Buttons/Button";
 
 export const ThemeSwitcher: React.FC = () => {
   const { theme, setTheme } = useTheme();
@@ -16,14 +17,14 @@ export const ThemeSwitcher: React.FC = () => {
   return (
     <div className={s.switcher}>
       {themes.map((t) => (
-        <button
+        <Button
+          size="small"
           key={t.id}
-          className={`${s.button} ${theme === t.id ? s.active : ""}`}
+          className={`${theme === t.id ? s.active : ""}`}
           onClick={() => setTheme(t.id)}
           type="button"
-        >
-          {t.label}
-        </button>
+          label={t.label}
+        />
       ))}
     </div>
   );

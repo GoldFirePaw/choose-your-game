@@ -1,26 +1,17 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-
-  background: var(--surface);
-  padding: 1.4rem;
-  border-radius: var(--radius);
-  border: 1px solid var(--border);
-  box-shadow: var(--shadow-sm);
-
-  transition: background-color 0.25s ease,
-              border-color 0.25s ease,
-              box-shadow 0.25s ease;
+  gap: 1.2rem;
 }
 
 /* Title */
 .title {
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   font-weight: 600;
   color: var(--text-main);
   text-align: center;
-  margin-bottom: 0.4rem;
+  letter-spacing: 0.3px;
+  margin-bottom: 0.5rem;
 }
 
 /* Inputs */
@@ -32,22 +23,25 @@
   color: var(--text-main);
 
   border: 1px solid var(--input-border);
-  border-radius: var(--radius);
+  border-radius: calc(var(--radius) + 2px);
 
-  transition: border-color 0.25s ease, 
-              box-shadow 0.25s ease, 
-              background-color 0.25s ease;
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background-color 0.25s ease,
+    transform 0.15s ease;
 }
 
 .input:hover {
-  background: var(--surface-medium);
+  background: color-mix(in srgb, var(--input-bg) 60%, var(--surface));
 }
 
 .input:focus {
   outline: none;
   border-color: var(--accent);
   background: var(--surface);
-  box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.25);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
+  transform: translateY(-1px);
 }
 
 /* Checkbox section */
@@ -58,33 +52,40 @@
 .navGameLabel {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.7rem;
 
   cursor: pointer;
 
-  padding: 0.8rem 1rem;
-  border-radius: var(--radius);
+  padding: 0.9rem 1.1rem;
+  border-radius: calc(var(--radius) + 2px);
+
   background: var(--surface-medium);
   border: 1px solid var(--border);
 
-  transition: background-color 0.25s ease,
-              border-color 0.25s ease,
-              box-shadow 0.25s ease;
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.25s ease,
+    transform 0.15s ease;
 }
 
 .navGameLabel:hover {
   background: var(--surface);
+  border-color: color-mix(in srgb, var(--accent) 30%, transparent);
   box-shadow: var(--shadow-sm);
+  transform: translateY(-2px);
 }
 
 .checkbox {
-  transform: scale(1.25);
+  transform: scale(1.3);
   accent-color: var(--accent);
+  cursor: pointer;
 }
 
 .checkboxText {
   font-weight: 500;
   color: var(--text-main);
+  letter-spacing: 0.2px;
 }
 
 /* ===== Confirmation Dialog ===== */
@@ -92,31 +93,37 @@
 .confirmDialog {
   position: fixed;
   inset: 0;
+
   background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(3px);
+  backdrop-filter: blur(6px);
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   z-index: 1000;
 }
 
 .confirmContent {
   background: var(--surface);
   padding: 2rem;
-  border-radius: var(--radius);
+  border-radius: calc(var(--radius) + 4px);
   border: 1px solid var(--border);
-  box-shadow: var(--shadow-md);
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.18),
+    var(--shadow-md);
 
   max-width: 420px;
-  width: 90%;
+  width: 92%;
   text-align: center;
 
-  animation: pop 0.2s ease-out;
+  animation: pop 0.25s cubic-bezier(.17,.89,.32,1.27);
+  backdrop-filter: blur(6px);
 }
 
 @keyframes pop {
   from {
-    transform: scale(0.93) translateY(8px);
+    transform: scale(0.9) translateY(10px);
     opacity: 0;
   }
   to {
@@ -127,14 +134,14 @@
 
 .confirmContent h3 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.35rem;
   color: var(--text-main);
   font-weight: 600;
 }
 
 .confirmContent p {
-  margin: 1.1rem 0 1.6rem;
-  color: var(--text-main);
+  margin: 1.2rem 0 1.8rem;
+  color: var(--text-secondary);
   line-height: 1.45;
 }
 
@@ -149,10 +156,14 @@
 /* Responsive */
 @media (max-width: 480px) {
   .form {
-    padding: 1.1rem;
+    padding: 1.2rem;
   }
 
   .title {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
+  }
+
+  .confirmContent {
+    padding: 1.6rem;
   }
 }

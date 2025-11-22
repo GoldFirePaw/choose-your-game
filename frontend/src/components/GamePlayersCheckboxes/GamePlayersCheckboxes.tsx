@@ -17,16 +17,21 @@ export const GamePlayersCheckboxes: React.FC<Props> = ({
   const { players } = usePlayerContext();
   const { games, updateGame } = useGamesContext();
 
-  const [localPlayerIds, setLocalPlayerIds] = useState<string[]>([]);
+  const game = games.find((g) => g._id === gameId);
+
+  const [localPlayerIds, setLocalPlayerIds] = useState<string[]>(() => [
+    ...(game?.players ?? []),
+  ]);
   const [error, setError] = useState<string | null>(null);
 
-  const game = games.find((g) => g._id === gameId);
-  if (!game) return null;
-
-  const [name, setName] = useState(game.name);
-  const [minPlayers, setMinPlayers] = useState(game.minimumPlayers);
-  const [maxPlayers, setMaxPlayers] = useState(game.maximumPlayers);
-  const [isNavGame, setIsNavGame] = useState(game.isNavGame ?? false);
+  const [name, setName] = useState<string>(game?.name ?? "");
+  const [minPlayers, setMinPlayers] = useState<number>(
+    game?.minimumPlayers ?? 1
+  );
+  const [maxPlayers, setMaxPlayers] = useState<number>(
+    game?.maximumPlayers ?? 1
+  );
+  const [isNavGame, setIsNavGame] = useState<boolean>(game?.isNavGame ?? false);
   const [showConfirm, setShowConfirm] = useState(false);
 
   /* Sync local state with updated game */
@@ -57,6 +62,12 @@ export const GamePlayersCheckboxes: React.FC<Props> = ({
     }
 
     setError(null);
+
+    // ensure game exists before using game._id
+    if (!game) {
+      setError("Jeu introuvable.");
+      return;
+    }
 
     const finalPlayerIds = isNavGame
       ? players.map((p) => p._id)
@@ -95,9 +106,12 @@ export const GamePlayersCheckboxes: React.FC<Props> = ({
     500
   );
 
-  return (
+  return game ? (
     <>
-      <div className={s.popperBackdrop} onClick={() => setDisplayPlayers(false)}>
+      <div
+        className={s.popperBackdrop}
+        onClick={() => setDisplayPlayers(false)}
+      >
         <div className={s.popperContainer} onClick={(e) => e.stopPropagation()}>
           <form
             onSubmit={(e) => {
@@ -174,7 +188,10 @@ export const GamePlayersCheckboxes: React.FC<Props> = ({
 
             <div className={s.buttonRow}>
               <Button label="Valider" onClick={debouncedSubmit} />
-              <Button label="Annuler" onClick={() => setDisplayPlayers(false)} />
+              <Button
+                label="Annuler"
+                onClick={() => setDisplayPlayers(false)}
+              />
             </div>
           </form>
         </div>
@@ -186,8 +203,8 @@ export const GamePlayersCheckboxes: React.FC<Props> = ({
           <div className={s.confirmContent}>
             <h3>Confirmation</h3>
             <p>
-              Voulez-vous vraiment en faire un jeu de navigateur ?
-              Il sera automatiquement associé à tous les joueurs.
+              Voulez-vous vraiment en faire un jeu de navigateur ? Il sera
+              automatiquement associé à tous les joueurs.
             </p>
 
             <div className={s.confirmButtons}>
@@ -198,5 +215,5 @@ export const GamePlayersCheckboxes: React.FC<Props> = ({
         </div>
       )}
     </>
-  );
+  ) : null;
 };

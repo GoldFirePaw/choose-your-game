@@ -1,22 +1,32 @@
-/* Wrapper of the full section */
+/* === Wrapper of the whole section === */
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.2rem;
+
   padding-bottom: 0.5rem;
+  animation: fadeIn 0.3s ease;
 }
 
-/* Title */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* === Section title === */
 .title {
-  font-size: 1.6rem;
+  font-size: 1.65rem;
   font-weight: 700;
   color: var(--text-main);
   text-align: center;
+
+  letter-spacing: -0.01em;
+  margin-bottom: 0.2rem;
 }
 
-/* Search input */
+
+/* === Search input === */
 .searchInput {
-  width: 100%;
   padding: 0.75rem 1rem;
 
   font-size: 1rem;
@@ -27,41 +37,58 @@
   border-radius: var(--radius);
   border: 1px solid var(--input-border);
 
-  transition: var(--transition);
+  transition: background-color 0.25s ease,
+              border-color 0.25s ease,
+              box-shadow 0.25s ease;
+}
+
+.searchInput:hover {
+  background: var(--surface-medium);
 }
 
 .searchInput:focus {
   outline: none;
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(200, 162, 122, 0.25);
+  background: var(--surface);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent);
 }
 
-/* Message "no games" */
+
+/* === No games message === */
 .noGames {
   text-align: center;
-  padding: 2rem 1rem;
+  padding: 2.2rem 1rem;
+
+  font-size: 1.05rem;
   color: var(--text-secondary);
   font-style: italic;
+
+  opacity: 0.85;
 }
 
-/* MAIN GRID */
+/* === MAIN GRID === */
 .gamesListContainer {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  display:flex;
+  flex-wrap: wrap;
 
-  gap: 1.2rem;
-
-  width: 100%;
+  gap: 1.4rem;
   padding-top: 0.5rem;
-
   box-sizing: border-box;
 
   transition: var(--transition);
 }
 
-/* For mobile, soften the grid */
-@media (max-width: 600px) {
+
+/* === Mobile adjustments === */
+@media (max-width: 650px) {
   .gamesListContainer {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 450px) {
+  .gamesListContainer {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   }
 }

@@ -59,7 +59,7 @@ export const AddGameForm: React.FC = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className={s.form}>
+      <form onSubmit={handleSubmit} className={s.form} id="add-game">
         <h2 className={s.title}>Ajouter un jeu</h2>
 
         <input

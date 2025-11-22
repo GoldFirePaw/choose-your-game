@@ -120,6 +120,7 @@ export const PlayerDetails = ({ playerId, onClose }: PlayerDetailsProps) => {
           label={deleting ? "Suppression..." : "Supprimer le joueur"}
           disabled={deleting}
         />
+        <Button label="Fermer" onClick={onClose} />
       </div>
 
       {deleteError && <div className={s.error}>{deleteError}</div>}

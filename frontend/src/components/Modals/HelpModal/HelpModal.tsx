@@ -1,6 +1,6 @@
 import { useState } from "react";
 import s from "./HelpModal.module.css";
-import { Button } from "../../Buttons/Button"; // adapte le chemin si besoin
+import { Button } from "../../Buttons/Button";
 import { DataStatus } from "../../DataStatus/DataStatus";
 
 export const HelpModal = () => {
@@ -9,18 +9,20 @@ export const HelpModal = () => {
   return (
     <>
       <div className={s.toolbar}>
-  <Button
-    onClick={() => setIsOpen(true)}
-    label="❔ Aide"
-    className={s.toolbarButton}
-  />
-  <DataStatus />
-  <Button
-    onClick={() => window.location.reload()}
-    label="🔄 Recharger"
-    className={s.toolbarButton}
-  />
-</div>
+        <Button
+          size="small"
+          onClick={() => setIsOpen(true)}
+          label="❔ Aide"
+          className={s.toolbarButton}
+        />
+        <DataStatus />
+        <Button
+          size="small"
+          onClick={() => window.location.reload()}
+          label="🔄 Recharger"
+          className={s.toolbarButton}
+        />
+      </div>
 
       {isOpen && (
         <div className={s.backdrop} onClick={() => setIsOpen(false)}>

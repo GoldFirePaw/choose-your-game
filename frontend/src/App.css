@@ -1,14 +1,10 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
 }
 
 /* Fond de la page basé sur le thème */
 body {
-  margin: 0;
-  min-height: 100vh;
   background: var(--bg);
   cursor: url('./assets/david-tennant-cursor-32w.png'), auto;
 }

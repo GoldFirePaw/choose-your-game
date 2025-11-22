@@ -12,6 +12,8 @@ export const FloatingMenu = () => {
       <button onClick={() => scrollTo("games-list")}>🎮</button>
       <button onClick={() => scrollTo("add-game")}>➕🎮</button>
       <button onClick={() => scrollTo("add-player")}>➕🧍</button>
+
+      {/* Home = retour en haut */}
       <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
         🏠
       </button>

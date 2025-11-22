@@ -1,10 +1,10 @@
-/* BACKDROP */
+/* === BACKDROP === */
 .backdrop {
   position: fixed;
   inset: 0;
 
   background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(6px) brightness(0.9);
 
   display: flex;
   align-items: center;
@@ -16,7 +16,7 @@
   animation: fadeIn 0.25s ease;
 }
 
-/* MODAL CONTAINER */
+/* === MODAL CONTAINER === */
 .modal {
   background: var(--surface);
   color: var(--text-main);
@@ -34,38 +34,66 @@
   flex-direction: column;
   overflow: hidden;
 
-  animation: popIn 0.22s ease-out;
+  animation: popIn 0.22s cubic-bezier(0.25, 0.9, 0.35, 1.2);
 }
 
-/* INNER SCROLLABLE CONTENT */
+/* === TITLE (optional, but recommended) === */
+.modal h2,
+.modal h3,
+.modal .title {
+  margin: 0 0 1rem 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-main);
+  letter-spacing: -0.01em;
+}
+
+/* === SCROLLABLE BODY === */
 .innerContent {
-  padding: 1.5rem 1.7rem;
+  padding: 1.6rem 1.8rem;
   overflow-y: auto;
   max-height: 70vh;
+
+  /* Fine scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--surface);
 }
 
-/* FOOTER (Bouton Close) */
+.innerContent::-webkit-scrollbar {
+  width: 8px;
+}
+
+.innerContent::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--accent) 60%, transparent);
+  border-radius: 10px;
+}
+
+.innerContent::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* === FOOTER SECTION === */
 .footer {
   padding: 1rem 1.7rem;
   border-top: 1px solid var(--border);
+
+  background: color-mix(in srgb, var(--surface-medium) 75%, transparent);
+  backdrop-filter: blur(4px);
+
   display: flex;
   justify-content: flex-end;
-  background: var(--surface-medium);
+  gap: 0.8rem;
 }
 
-/* ANIMATIONS */
+/* === ANIMATIONS === */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 @keyframes popIn {
   from {
-    transform: scale(0.92) translateY(8px);
+    transform: scale(0.92) translateY(12px);
     opacity: 0;
   }
   to {
@@ -74,17 +102,17 @@
   }
 }
 
-/* RESPONSIVE */
+/* === RESPONSIVE === */
 @media (max-width: 600px) {
   .modal {
     border-radius: var(--radius-sm);
   }
 
   .innerContent {
-    padding: 1.2rem;
+    padding: 1.25rem 1.3rem;
   }
 
   .footer {
-    padding: 0.8rem 1.2rem;
+    padding: 0.8rem 1.3rem;
   }
 }

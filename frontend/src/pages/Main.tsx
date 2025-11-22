@@ -6,7 +6,7 @@ import { Modal } from "../components/Modals/Modal";
 import { usePlayerContext } from "../contexts/playersContext";
 import { FloatingMenu } from "../components/FloatingMenu/FloatingMenu";
 import { HelpModal } from "../components/Modals/HelpModal/HelpModal";
-import { ThemeSwitcher } from "../components/ThemeSwitcher/ThemeSwitcher";
+import { ThemeMenu } from "../components/ThemeSwitcher/ThemeMenu";
 
 export const Main = () => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
@@ -16,7 +16,7 @@ export const Main = () => {
 
   return (
     <div className={s.wrapper}>
-      <ThemeSwitcher />
+      <ThemeMenu />
       <HelpModal />
       <FloatingMenu />
       <div className={s.filtersContainer}>
