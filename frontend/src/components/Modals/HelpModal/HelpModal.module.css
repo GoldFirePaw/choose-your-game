@@ -30,7 +30,6 @@
   align-items: center;
 }
 
-/* 🔥 UTILISE LES VARIABLES DU THÈME */
 .modal {
   background-color: var(--surface);
   color: var(--text-main);

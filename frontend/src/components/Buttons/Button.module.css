@@ -20,6 +20,16 @@
   user-select: none;
 }
 
+/* SIZE VARIANTS */
+.full {
+  width: 100%;
+  max-width: 100%;
+}
+
+.small {
+  width: 150px;
+}
+
 /* Disabled */
 .button:disabled {
   opacity: 0.45;
