@@ -5,8 +5,7 @@ import s from "./Main.module.css";
 import { Modal } from "../components/Modals/Modal";
 import { usePlayerContext } from "../contexts/playersContext";
 import { FloatingMenu } from "../components/FloatingMenu/FloatingMenu";
-import { HelpModal } from "../components/Modals/HelpModal/HelpModal";
-import { ThemeMenu } from "../components/ThemeSwitcher/ThemeMenu";
+import { Navbar } from "../components/NavBar/Navbar";
 
 export const Main = () => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
@@ -15,11 +14,10 @@ export const Main = () => {
   const { selectedPlayerId } = usePlayerContext();
 
   return (
-    <div className={s.wrapper}>
-      <ThemeMenu />
-      <HelpModal />
-      <FloatingMenu />
-      <div className={s.filtersContainer}>
+    <>
+      <Navbar />
+      <div className={s.wrapper}>
+        <FloatingMenu />
         <Card
           content={"activePlayers"}
           selected={selectedPlayers}
@@ -27,19 +25,16 @@ export const Main = () => {
           setModalContent={setModalContent}
         />
         <Card content="filteredGameList" selectedPlayers={selectedPlayers} />
-      </div>
-      <div className={s.addFormsContainer}>
         <Card content="addAGame" />
-        <Card content="addAPlayer" />
+        <Card content="gamesList" />
+        {modalContent !== "" && selectedPlayerId && (
+          <Modal
+            modalContent={modalContent}
+            onClose={() => setModalContent("")}
+            selectedPlayerId={selectedPlayerId}
+          />
+        )}
       </div>
-      <Card content="gamesList" />
-      {modalContent !== "" && selectedPlayerId && (
-        <Modal
-          modalContent={modalContent}
-          onClose={() => setModalContent("")}
-          selectedPlayerId={selectedPlayerId}
-        />
-      )}
-    </div>
+    </>
   );
 };

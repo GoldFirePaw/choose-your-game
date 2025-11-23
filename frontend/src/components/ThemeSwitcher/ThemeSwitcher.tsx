@@ -12,6 +12,7 @@ export const ThemeSwitcher: React.FC = () => {
     { id: "sunset", label: "🌅 Sunset" },
     { id: "amethyst", label: "💜 Amethyst" },
     { id: "iceberg", label: "❄️ Iceberg" },
+    { id: "obsidian", label: "🪨 Obsidian" },
   ];
 
   return (

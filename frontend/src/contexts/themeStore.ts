@@ -1,6 +1,12 @@
 import { createContext, useContext } from "react";
 
-export type Theme = "nebula" | "forest" | "sunset" | "amethyst" | "iceberg";
+export type Theme =
+  | "nebula"
+  | "forest"
+  | "sunset"
+  | "amethyst"
+  | "iceberg"
+  | "obsidian";
 
 export interface ThemeContextType {
   theme: Theme;

@@ -1,29 +1,18 @@
 .wrapper {
   padding: 2rem 1rem;
-  margin: 0 auto;
+  margin: 32px 0 0 32px;
 
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 2.5rem;
 
   background: var(--bg);
   transition: var(--transition);
 }
 
-.filtersContainer,
-.addFormsContainer {
+.topMenu {
+  width: 100%;
   display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 1.5rem;
-  justify-content: center;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-  .filtersContainer,
-  .addFormsContainer {
-    flex-direction: column;
-    align-items: stretch;
-  }
+  justify-content: space-between;
+  align-items: center;
 }

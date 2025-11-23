@@ -70,6 +70,9 @@
 .gamesListContainer {
   display:flex;
   flex-wrap: wrap;
+  overflow: hidden;
+  overflow-y: auto;
+  max-height: 300px;
 
   gap: 1.4rem;
   padding-top: 0.5rem;

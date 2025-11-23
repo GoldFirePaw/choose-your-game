@@ -2,45 +2,45 @@
   font-size: 0.9rem;
   font-style: italic;
   color: var(--text-secondary);
-  margin-top: 0.4rem;
-  text-align: center;
   max-width: 600px;
-  margin-inline: auto;
-  line-height: 1.4;
+  text-align: justify;
 }
 
-/* Container for all players */
-.playersContainer {
+.header {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.85rem;
   justify-content: center;
-  margin-top: 1.2rem;
-  padding-inline: 0.5rem;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.1rem;
+  user-select: none;
+}
+
+.instructionsContainer {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+.playersContainer {
+  height: 200px;
+  overflow-y: auto;
+  margin-left: calc(var(--card-padding) * -1);
+  margin-right: calc(var(--card-padding) * -1);
+  margin-bottom: calc(var(--card-padding) * -1);
 }
 
 /* Each player card */
 .playerContainer {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-
-  padding: 0.85rem 1.1rem;
-
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: calc(var(--radius) + 4px);
-  
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: blur(4px);
-
+  padding: 0.85rem 1.1rem;  
   color: var(--text-main);
   font-size: 1rem;
 
   cursor: pointer;
-
-  min-width: 170px;
-  flex: 1 1 calc(33.33% - 1rem);
 
   transition:
     background 0.25s ease,
@@ -53,7 +53,15 @@
   background: var(--surface-medium);
   border-color: color-mix(in srgb, var(--accent) 30%, transparent);
   box-shadow: var(--shadow-md);
-  transform: translateY(-3px);
+}
+.playerContainer:nth-child(even) {
+  background: var(--surface-light);
+}
+
+
+.playerContainer:last-child {
+  border-radius: 0 0 var(--radius) var(--radius);
+  margin-bottom: calc(var(--card-padding) * -1);
 }
 
 /* Checkbox alignment */
