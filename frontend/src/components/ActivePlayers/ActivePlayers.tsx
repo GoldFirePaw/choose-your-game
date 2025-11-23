@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 import { usePlayerContext } from "../../contexts/playersContext";
 import type { Player } from "../../types";
 import s from "./ActivePlayers.module.css";
 import { Dots } from "../../assets/icons/Dots";
 import { Chevron } from "../../assets/icons/Chevron";
 import { AddPlayerForm } from "../AddPlayerForm/AddPlayerForm";
+import { Close } from "../../assets/icons/Close";
+import { Button } from "../Buttons/Button";
+import { Plus } from "../../assets/icons/Plus";
 
 interface ActivePlayersProps {
   selected: Player[];
@@ -18,7 +21,14 @@ export const ActivePlayers: React.FC<ActivePlayersProps> = ({
   setModalContent,
 }) => {
   const { players, handleSelectPlayer } = usePlayerContext();
-  const [isOpen, setOpen] = React.useState(false);
+  const [isOpen, setOpen] = useState(false);
+  const [isAddPlayerOpen, setIsAddPlayerOpen] = useState(false);
+
+  const sortedPlayers = useMemo(() => {
+    return [...players].sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+    );
+  }, [players]);
 
   const toggle = (player: Player) => {
     const isSelected = selected.some((p) => p._id === player._id);
@@ -35,6 +45,12 @@ export const ActivePlayers: React.FC<ActivePlayersProps> = ({
     setModalContent("playerDetails");
   };
 
+  const uncheckAll = () => {
+    onChange([]);
+  };
+
+  const numberOfSelectedPlayers = selected.length;
+
   return (
     <div className={s.wrapper}>
       <div
@@ -50,14 +66,45 @@ export const ActivePlayers: React.FC<ActivePlayersProps> = ({
       {isOpen && (
         <>
           <div className={s.instructionsContainer}>
-            <AddPlayerForm />
+            <div className={s.actionButtonsContainer}>
+              <Button
+                id="add-player"
+                className={s.actionButton}
+                onClick={() => {
+                  setIsAddPlayerOpen(!isAddPlayerOpen);
+                }}
+                label={
+                  <>
+                    {isAddPlayerOpen ? <Close /> : <Plus />}
+                    Ajouter un joueur
+                  </>
+                }
+              />
+              {numberOfSelectedPlayers > 0 && isOpen && (
+                <Button
+                  className={s.actionButton}
+                  onClick={uncheckAll}
+                  label={
+                    <>
+                      {" "}
+                      <Close />
+                      Tout décocher
+                    </>
+                  }
+                />
+              )}
+            </div>
+            <AddPlayerForm
+              isOpen={isAddPlayerOpen}
+              setIsOpen={setIsAddPlayerOpen}
+            />
             <p className={s.instructions}>
               Cliquez sur un joueur pour voir ses détails ou cochez pour
               l’ajouter à la partie.
             </p>
           </div>
           <div className={s.playersContainer}>
-            {players.map((player) => {
+            {sortedPlayers.map((player) => {
               const isChecked = selected.some((p) => p._id === player._id);
 
               return (

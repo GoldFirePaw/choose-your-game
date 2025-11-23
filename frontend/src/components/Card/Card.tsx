@@ -51,8 +51,8 @@ export const Card: React.FC<CardProps> = ({
         return <AddGameForm />;
 
       case "addAPlayer":
-        return <AddPlayerForm />;
-
+        return <AddPlayerForm isOpen={true} setIsOpen={() => {}} />;
+        
       case "filteredGameList":
         return selectedPlayers ? (
           <FilteredGameList selectedPlayers={selectedPlayers} />

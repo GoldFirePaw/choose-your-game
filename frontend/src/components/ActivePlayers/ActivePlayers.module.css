@@ -24,6 +24,29 @@
   text-align: center;
 }
 
+.actionButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 12px;
+  color: var(--text-main);
+  text-align: center;
+}
+
+.actionButtonsContainer {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.uncheckAll {
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
 .playersContainer {
   height: 200px;
   overflow-y: auto;

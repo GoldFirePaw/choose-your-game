@@ -3,13 +3,18 @@ import { usePlayerContext } from "../../contexts/playersContext";
 import { useSubmitWithDebounce } from "../../hooks/useDebounce";
 import s from "./AddPlayerForm.module.css";
 import { Button } from "../Buttons/Button";
-import { Plus } from "../../assets/icons/Plus";
-import { Close } from "../../assets/icons/Close";
 
-export const AddPlayerForm = () => {
+interface AddPlayerFormProps {
+  isOpen: boolean;
+  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export const AddPlayerForm: React.FC<AddPlayerFormProps> = ({
+  isOpen,
+  setIsOpen,
+}) => {
   const [name, setName] = useState("");
   const { addPlayer } = usePlayerContext();
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleAddPlayer = async () => {
     const trimmedName = name.trim();
@@ -32,20 +37,6 @@ export const AddPlayerForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className={s.form}>
-      <Button
-        id="add-player"
-        className={s.title}
-        onClick={() => {
-          console.log("clicked");
-          setIsOpen(!isOpen);
-        }}
-        label={
-          <>
-            {isOpen ? <Close /> : <Plus />}
-            Ajouter un joueur
-          </>
-        }
-      />
       {isOpen && (
         <>
           <input
