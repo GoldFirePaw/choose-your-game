@@ -2,6 +2,9 @@ import React from "react";
 import { usePlayerContext } from "../../contexts/playersContext";
 import type { Player } from "../../types";
 import s from "./ActivePlayers.module.css";
+import { Dots } from "../../assets/icons/Dots";
+import { Chevron } from "../../assets/icons/Chevron";
+import { AddPlayerForm } from "../AddPlayerForm/AddPlayerForm";
 
 interface ActivePlayersProps {
   selected: Player[];
@@ -15,6 +18,7 @@ export const ActivePlayers: React.FC<ActivePlayersProps> = ({
   setModalContent,
 }) => {
   const { players, handleSelectPlayer } = usePlayerContext();
+  const [isOpen, setOpen] = React.useState(false);
 
   const toggle = (player: Player) => {
     const isSelected = selected.some((p) => p._id === player._id);
@@ -32,49 +36,60 @@ export const ActivePlayers: React.FC<ActivePlayersProps> = ({
   };
 
   return (
-    <div>
-      <h3 id="active-players">Joueurs présents</h3>
-
-      <p className={s.instructions}>
-        Cliquez sur un joueur pour voir ses détails <br />
-        Cochez pour l’ajouter à la partie.
-      </p>
-
-      <div className={s.playersContainer}>
-        {players.map((player) => {
-          const isChecked = selected.some((p) => p._id === player._id);
-
-          return (
-            <div key={player._id} className={s.playerContainer}>
-              <label
-                className={s.checkboxLabel}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <input
-                  type="checkbox"
-                  checked={isChecked}
-                  onChange={() => toggle(player)}
-                />
-              </label>
-
-              <span
-                className={s.playerName}
-                onClick={() => openDetails(player._id)}
-              >
-                {player.name}
-              </span>
-
-              <button
-                type="button"
-                className={s.editBtn}
-                onClick={() => openDetails(player._id)}
-              >
-                ✏️
-              </button>
-            </div>
-          );
-        })}
+    <div className={s.wrapper}>
+      <div
+        className={s.header}
+        onClick={() => {
+          setOpen(!isOpen);
+        }}
+        id="active-players"
+      >
+        <Chevron />
+        Joueurs présents
       </div>
+      {isOpen && (
+        <>
+          <div className={s.instructionsContainer}>
+            <AddPlayerForm />
+            <p className={s.instructions}>
+              Cliquez sur un joueur pour voir ses détails ou cochez pour
+              l’ajouter à la partie.
+            </p>
+          </div>
+          <div className={s.playersContainer}>
+            {players.map((player) => {
+              const isChecked = selected.some((p) => p._id === player._id);
+
+              return (
+                <div key={player._id} className={s.playerContainer}>
+                  <label
+                    className={s.checkboxLabel}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={isChecked}
+                      onChange={() => toggle(player)}
+                    />
+                  </label>
+
+                  <span className={s.playerName} onClick={() => toggle(player)}>
+                    {player.name}
+                  </span>
+
+                  <button
+                    type="button"
+                    className={s.editBtn}
+                    onClick={() => openDetails(player._id)}
+                  >
+                    <Dots />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        </>
+      )}
     </div>
   );
 };

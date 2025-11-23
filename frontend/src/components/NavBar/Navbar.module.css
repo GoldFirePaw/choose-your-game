@@ -1,0 +1,31 @@
+.navbarContainer {
+  width: fit-content;
+  display: flex;
+  position: fixed;
+  gap: 1rem;
+  z-index: 1000;
+}
+
+.closedNavbar {
+  left: 5px;
+  top: 5px;
+}
+
+.openNavbar {
+  flex-direction: column;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
+  background-color: var(--surface-light);  
+  height: 100vh;
+  padding: 16px;
+    left: 0;
+    top: 0;
+}
+
+.navbar {
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  border-radius: var(--radius);
+  gap: 1rem;
+}

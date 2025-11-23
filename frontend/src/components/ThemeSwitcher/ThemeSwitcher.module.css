@@ -1,5 +1,6 @@
 .switcher {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
@@ -30,13 +31,8 @@
 }
 
 .themeMenu {
-  position: absolute;
   display: flex;
-  flex-direction: column;
-  top: 10px;
   z-index: 100;
   display: flex;
   gap: 0.5rem;
-  margin: 10px;
-  padding: 30px;
 }

@@ -30,7 +30,11 @@ export const FilteredGameList = ({
   return (
     <div className={s.container}>
       <h2 className={s.title}>
-        Jeux compatibles avec {playerCount} joueur{playerCount > 1 ? "s" : ""}
+        {playerCount === 0
+          ? "Aucun joueur sélectionné"
+          : `Jeux compatibles avec ${playerCount} joueur${
+              playerCount > 1 ? "s" : ""
+            }`}
       </h2>
       {loading ? (
         <p className={s.loading}>Chargement des jeux...</p>
@@ -41,7 +45,11 @@ export const FilteredGameList = ({
           </div>
         ))
       ) : (
-        <p className={s.noResults}>Aucun jeu compatible pour ce groupe 😢</p>
+        <p className={s.noResults}>
+          {playerCount === 0
+            ? "Veuillez sélectionner au moins un joueur 😄"
+            : "Aucun jeu compatible pour ce groupe 😢"}
+        </p>
       )}
     </div>
   );

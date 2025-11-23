@@ -4,7 +4,7 @@ import { useCallback, useRef } from "react";
  * Custom hook to prevent rapid successive function calls (debouncing)
  * Useful for preventing double-clicks on buttons
  */
-export const useDebounce = <T extends (...args: any[]) => any>(
+export const useDebounce = <T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number = 300
 ): ((...args: Parameters<T>) => void) => {
@@ -43,7 +43,7 @@ export const useDebounce = <T extends (...args: any[]) => any>(
  * Custom hook for form submissions with debouncing and loading state
  */
 export const useSubmitWithDebounce = <
-  T extends (...args: any[]) => Promise<any>
+  T extends (...args: unknown[]) => Promise<unknown>
 >(
   callback: T,
   delay: number = 500

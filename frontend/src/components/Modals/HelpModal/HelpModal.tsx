@@ -1,6 +1,6 @@
 import { useState } from "react";
 import s from "./HelpModal.module.css";
-import { Button } from "../../Buttons/Button";
+import { Button, SecondaryButton } from "../../Buttons/Button";
 import { DataStatus } from "../../DataStatus/DataStatus";
 
 export const HelpModal = () => {
@@ -8,22 +8,12 @@ export const HelpModal = () => {
 
   return (
     <>
-      <div className={s.toolbar}>
-        <Button
-          size="small"
-          onClick={() => setIsOpen(true)}
-          label="❔ Aide"
-          className={s.toolbarButton}
-        />
-        <DataStatus />
-        <Button
-          size="small"
-          onClick={() => window.location.reload()}
-          label="🔄 Recharger"
-          className={s.toolbarButton}
-        />
-      </div>
-
+      <SecondaryButton onClick={() => setIsOpen(true)} label="❔ Aide" />
+      <DataStatus />
+      <SecondaryButton
+        onClick={() => window.location.reload()}
+        label="🔄 Recharger"
+      />
       {isOpen && (
         <div className={s.backdrop} onClick={() => setIsOpen(false)}>
           <div className={s.modal} onClick={(e) => e.stopPropagation()}>

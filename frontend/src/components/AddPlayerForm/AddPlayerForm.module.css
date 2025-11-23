@@ -6,12 +6,13 @@
 
 /* ===== Title ===== */
 .title {
-  font-size: 1.35rem;
-  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 12px;
   color: var(--text-main);
   text-align: center;
-  margin-bottom: 0.4rem;
-  letter-spacing: 0.2px;
 }
 
 /* ===== Input ===== */
