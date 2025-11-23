@@ -1,8 +1,0 @@
-# Ignorer les données locales
-backend/data/*.json
-
-# Ignorer les fichiers de logs et autres
-*.log
-node_modules/
-dist/
-.env.production
