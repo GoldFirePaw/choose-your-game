@@ -8,6 +8,7 @@ import { AddPlayerForm } from "../AddPlayerForm/AddPlayerForm";
 import { Close } from "../../assets/icons/Close";
 import { Button } from "../Buttons/Button";
 import { Plus } from "../../assets/icons/Plus";
+import { LoadingSkeleton } from "../LoadingSkeleton/LoadingSkeleton";
 
 interface ActivePlayersProps {
   selected: Player[];
@@ -20,7 +21,7 @@ export const ActivePlayers: React.FC<ActivePlayersProps> = ({
   onChange,
   setModalContent,
 }) => {
-  const { players, handleSelectPlayer } = usePlayerContext();
+  const { players, handleSelectPlayer, loading } = usePlayerContext();
   const [isOpen, setOpen] = useState(false);
   const [isAddPlayerOpen, setIsAddPlayerOpen] = useState(false);
 
@@ -104,36 +105,43 @@ export const ActivePlayers: React.FC<ActivePlayersProps> = ({
             </p>
           </div>
           <div className={s.playersContainer}>
-            {sortedPlayers.map((player) => {
-              const isChecked = selected.some((p) => p._id === player._id);
+            {loading ? (
+              <LoadingSkeleton count={4} />
+            ) : (
+              sortedPlayers.map((player) => {
+                const isChecked = selected.some((p) => p._id === player._id);
 
-              return (
-                <div key={player._id} className={s.playerContainer}>
-                  <label
-                    className={s.checkboxLabel}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <input
-                      type="checkbox"
-                      checked={isChecked}
-                      onChange={() => toggle(player)}
-                    />
-                  </label>
+                return (
+                  <div key={player._id} className={s.playerContainer}>
+                    <label
+                      className={s.checkboxLabel}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggle(player)}
+                      />
+                    </label>
 
-                  <span className={s.playerName} onClick={() => toggle(player)}>
-                    {player.name}
-                  </span>
+                    <span
+                      className={s.playerName}
+                      onClick={() => toggle(player)}
+                    >
+                      {player.name}
+                    </span>
 
-                  <button
-                    type="button"
-                    className={s.editBtn}
-                    onClick={() => openDetails(player._id)}
-                  >
-                    <Dots />
-                  </button>
-                </div>
-              );
-            })}
+                    <button
+                      type="button"
+                      className={s.editBtn}
+                      onClick={() => openDetails(player._id)}
+                    >
+                      <Dots />
+                    </button>
+                  </div>
+                );
+              })
+            )}
           </div>
         </>
       )}

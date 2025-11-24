@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import s from "./GamesList.module.css";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { GameCard } from "../GameCard/GameCard";
@@ -9,11 +9,14 @@ export const GamesList: React.FC = () => {
   const [activeGameId, setActiveGameId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredGames = [...games]
-    .filter((game) =>
+  const filteredGames = useMemo(() => {
+    const filtered = games.filter((game) =>
       game.name.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => a.name.localeCompare(b.name));
+    );
+    return filtered.sort((a, b) =>
+      a.name.localeCompare(b.name, undefined, { sensitivity: "base" })
+    );
+  }, [games, searchTerm]);
 
   return (
     <div className={s.wrapper}>

@@ -25,6 +25,11 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
   const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
 
   const fetchPlayers = async () => {
+    // Hardcoded delay for dev testing: ensures the loading skeleton is visible
+    setLoading(true);
+    const SIMULATED_DELAY_MS = 2500;
+    await new Promise((r) => setTimeout(r, SIMULATED_DELAY_MS));
+
     const data = await getPlayers();
     setPlayers(data);
     setLoading(false);
