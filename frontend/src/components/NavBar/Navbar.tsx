@@ -8,6 +8,7 @@ import { Button, SecondaryButton } from "../Buttons/Button";
 import { useGamesContext } from "../../contexts/gamesContext";
 import { usePlayerContext } from "../../contexts/playersContext";
 import type { Game, Player } from "../../types";
+import { verifyAdminPassword } from "../../api/admin/verifyAdminPassword";
 import s from "./Navbar.module.css";
 
 type ImportPayload = {
@@ -148,6 +149,16 @@ export const Navbar = () => {
     }
   };
 
+  const requireAdminPassword = async () => {
+    const adminPassword = window.prompt("Mot de passe admin :");
+    if (!adminPassword) return false;
+    const isValid = await verifyAdminPassword(adminPassword);
+    if (!isValid) {
+      window.alert("Mot de passe invalide.");
+    }
+    return isValid;
+  };
+
   return (
     <nav
       className={cx(s.navbarContainer, isOpen ? s.openNavbar : s.closedNavbar)}
@@ -167,10 +178,19 @@ export const Navbar = () => {
         <div className={s.navbar}>
           <ThemeMenu setDisplayThemeSwitcher={setDisplayThemeSwitcher} />
           {displayThemeSwitcher && <ThemeSwitcher />}
-          <SecondaryButton label="Exporter JSON" onClick={handleExport} />
+          <SecondaryButton
+            label="Exporter JSON"
+            onClick={async () => {
+              if (!(await requireAdminPassword())) return;
+              handleExport();
+            }}
+          />
           <SecondaryButton
             label="Importer JSON"
-            onClick={() => fileInputRef.current?.click()}
+            onClick={async () => {
+              if (!(await requireAdminPassword())) return;
+              fileInputRef.current?.click();
+            }}
           />
           <input
             ref={fileInputRef}

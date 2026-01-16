@@ -14,9 +14,8 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx}": [
-      "eslint --fix",
-      "git add"
+    "frontend/**/*.{js,jsx,ts,tsx}": [
+      "npx eslint --fix --config frontend/eslint.config.js"
     ]
   }
 }
