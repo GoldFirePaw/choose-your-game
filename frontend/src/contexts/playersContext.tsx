@@ -8,7 +8,7 @@ import { deletePlayer as apiDeletePlayer } from "../api/players/deletePlayer";
 type PlayersContextType = {
   players: Player[];
   loading: boolean;
-  addPlayer: (name: string) => Promise<void>;
+  addPlayer: (name: string) => Promise<Player | null>;
   deletePlayer: (
     id: string,
     password: string
@@ -49,11 +49,12 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
     return () => clearInterval(interval);
   }, []);
 
-  const addPlayer = async (name: string) => {
+  const addPlayer = async (name: string): Promise<Player | null> => {
     const newPlayer = await apiAddPlayer(name);
     if (newPlayer) {
       setPlayers((prev) => [...prev, newPlayer]);
     }
+    return newPlayer;
   };
 
   const deletePlayer = async (
