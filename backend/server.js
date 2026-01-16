@@ -60,6 +60,11 @@ const validateAdminPassword = (req, res, next) => {
   next();
 };
 
+// POST /admin/verify (requires admin password)
+app.post("/admin/verify", validateAdminPassword, (req, res) => {
+  res.json({ success: true });
+});
+
 /* =======================
    ROUTES GAMES
 ======================= */
