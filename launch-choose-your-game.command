@@ -14,7 +14,7 @@ BACKEND_PID=$!
 
 (
   cd "$ROOT_DIR/frontend"
-  npm run dev
+  npm run dev -- --port 5175
 ) &
 FRONTEND_PID=$!
 

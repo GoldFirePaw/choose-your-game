@@ -6,7 +6,7 @@ const compression = require("compression");
 const { MongoClient, ObjectId } = require("mongodb");
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 const client = new MongoClient(process.env.MONGO_URI);
 const dbName = "choose-your-game";
 
@@ -63,6 +63,135 @@ const validateAdminPassword = (req, res, next) => {
 // POST /admin/verify (requires admin password)
 app.post("/admin/verify", validateAdminPassword, (req, res) => {
   res.json({ success: true });
+});
+
+// POST /admin/replace (requires admin password)
+app.post("/admin/replace", validateAdminPassword, async (req, res) => {
+  try {
+    if (!db) {
+      console.error("❌ Database not connected");
+      return res.status(500).json({ error: "Database connection error" });
+    }
+
+    const { players = [], games = [] } = req.body;
+    if (!Array.isArray(players) || !Array.isArray(games)) {
+      return res
+        .status(400)
+        .json({ error: "Invalid payload: players/games must be arrays" });
+    }
+
+    const isValidObjectIdString = (value) =>
+      typeof value === "string" &&
+      value.length === 24 &&
+      /^[0-9a-fA-F]+$/.test(value);
+
+    const usedIds = new Set();
+    const nameToId = new Map();
+    const oldIdToId = new Map();
+    const playersToInsert = [];
+
+    for (const player of players) {
+      if (!player || typeof player.name !== "string") continue;
+      const name = player.name.trim();
+      if (!name) continue;
+
+      const normalizedName = name.toLowerCase();
+      if (nameToId.has(normalizedName)) {
+        if (isValidObjectIdString(player._id)) {
+          oldIdToId.set(player._id, nameToId.get(normalizedName));
+        }
+        continue;
+      }
+
+      let objectId;
+      if (isValidObjectIdString(player._id) && !usedIds.has(player._id)) {
+        objectId = new ObjectId(player._id);
+      } else {
+        objectId = new ObjectId();
+      }
+
+      usedIds.add(objectId.toString());
+      nameToId.set(normalizedName, objectId);
+      if (isValidObjectIdString(player._id)) {
+        oldIdToId.set(player._id, objectId);
+      }
+
+      playersToInsert.push({ _id: objectId, name });
+    }
+
+    const gamesToInsert = [];
+
+    for (const game of games) {
+      if (!game || typeof game.name !== "string") continue;
+      const name = game.name.trim();
+      if (!name) continue;
+
+      const minimumPlayers = parseInt(game.minimumPlayers, 10) || 1;
+      const maximumPlayers = parseInt(game.maximumPlayers, 10) || minimumPlayers;
+      const playerEntries = Array.isArray(game.players) ? game.players : [];
+      const playerIds = [];
+      const seen = new Set();
+
+      for (const entry of playerEntries) {
+        let resolvedId = null;
+
+        if (typeof entry === "string" && oldIdToId.has(entry)) {
+          resolvedId = oldIdToId.get(entry);
+        } else if (
+          entry &&
+          typeof entry === "object" &&
+          typeof entry._id === "string" &&
+          oldIdToId.has(entry._id)
+        ) {
+          resolvedId = oldIdToId.get(entry._id);
+        } else if (
+          entry &&
+          typeof entry === "object" &&
+          typeof entry.name === "string"
+        ) {
+          const normalizedName = entry.name.trim().toLowerCase();
+          if (nameToId.has(normalizedName)) {
+            resolvedId = nameToId.get(normalizedName);
+          }
+        }
+
+        if (resolvedId) {
+          const idString = resolvedId.toString();
+          if (!seen.has(idString)) {
+            seen.add(idString);
+            playerIds.push(resolvedId);
+          }
+        }
+      }
+
+      gamesToInsert.push({
+        name,
+        minimumPlayers,
+        maximumPlayers,
+        players: playerIds,
+        isNavGame: Boolean(game.isNavGame),
+      });
+    }
+
+    await db.collection("games").deleteMany({});
+    await db.collection("players").deleteMany({});
+
+    if (playersToInsert.length > 0) {
+      await db.collection("players").insertMany(playersToInsert);
+    }
+    if (gamesToInsert.length > 0) {
+      await db.collection("games").insertMany(gamesToInsert);
+    }
+
+    res.json({
+      success: true,
+      playersInserted: playersToInsert.length,
+      gamesInserted: gamesToInsert.length,
+    });
+  } catch (err) {
+    console.error("❌ Error in /admin/replace:", err);
+    res.status(500).json({ error: "Erreur serveur" });
+  }
 });
 
 /* =======================

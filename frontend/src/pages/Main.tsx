@@ -6,6 +6,7 @@ import { Modal } from "../components/Modals/Modal";
 import { usePlayerContext } from "../contexts/playersContext";
 import { FloatingMenu } from "../components/FloatingMenu/FloatingMenu";
 import { Navbar } from "../components/NavBar/Navbar";
+import { DataTransfer } from "../components/DataTransfer/DataTransfer";
 
 export const Main = () => {
   const [selectedPlayers, setSelectedPlayers] = useState<Player[]>([]);
@@ -18,6 +19,9 @@ export const Main = () => {
       <Navbar />
       <div className={s.wrapper}>
         <FloatingMenu />
+        <div className={s.topMenu}>
+          <DataTransfer />
+        </div>
         <Card
           content={"activePlayers"}
           selected={selectedPlayers}
