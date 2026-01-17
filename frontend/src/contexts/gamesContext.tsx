@@ -9,7 +9,7 @@ import type { Game, NewGame, GameUpdatePayload } from "../types";
 type GamesContextType = {
   games: Game[];
   loading: boolean;
-  addGame: (game: NewGame) => Promise<void>;
+  addGame: (game: NewGame) => Promise<Game | null>;
   deleteGame: (
     id: string,
     password: string
@@ -103,12 +103,13 @@ export const GamesProvider = ({ children }: { children: ReactNode }) => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [lastFetch]);
 
-  const addGame = async (game: NewGame) => {
+  const addGame = async (game: NewGame): Promise<Game | null> => {
     const newGame = await apiAddGame(game);
     if (newGame) {
       console.log("🧠 Insertion dans le contexte :", newGame);
       setGames((prev) => [...prev, newGame]);
     }
+    return newGame;
   };
 
   const updateGame = async (id: string, updatedGame: GameUpdatePayload) => {

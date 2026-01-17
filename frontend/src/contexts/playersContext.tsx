@@ -15,6 +15,7 @@ type PlayersContextType = {
   ) => Promise<{ success: boolean; error?: string }>;
   selectedPlayerId: string | null;
   handleSelectPlayer: (id: string | null) => void;
+  refetchPlayers: () => Promise<void>;
 };
 
 const PlayersContext = createContext<PlayersContextType | undefined>(undefined);
@@ -81,6 +82,7 @@ export const PlayersProvider = ({ children }: { children: ReactNode }) => {
         deletePlayer,
         selectedPlayerId,
         handleSelectPlayer,
+        refetchPlayers: fetchPlayers,
       }}
     >
       {children}
